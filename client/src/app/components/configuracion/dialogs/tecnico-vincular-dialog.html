@@ -1,0 +1,47 @@
+<h1 mat-dialog-title>Añadir Técnico</h1>
+<div mat-dialog-content style="text-align: center;">
+
+    <!-- Persona Sin Vincular -->
+    <mat-form-field class="opciones-full-width" appearance="outline">
+        <mat-label>A Vincular</mat-label>
+        <mat-select [formControl]="personaControl" [(value)]="tecnico.idpersona">
+            <mat-optgroup *ngFor="let group of personaGrupe" [label]="group.name">
+                <mat-option required *ngFor="let persona of group.persona" [value]="persona.idpersona">
+                    {{persona.nombre}}
+                </mat-option>
+            </mat-optgroup>
+        </mat-select>
+        <mat-error *ngIf="personaControl.hasError('required')">
+            Este campo es <strong>requirido</strong>
+        </mat-error>
+    </mat-form-field>
+
+    <!--Funcion-->
+    <mat-form-field class="opciones-full-width" hintLabel="Máximo 100 caracteres">
+        <input required maxlength="100" #txt_funcion type="text" matInput placeholder="Función"
+            name="funcion" [(ngModel)]="tecnico.funcion" [formControl]="funcionControl"
+            [errorStateMatcher]="matcher">
+
+        <mat-error *ngIf="funcionControl.hasError('required')">
+            Función es <strong>requirido</strong>
+        </mat-error>
+        <mat-hint align="end">{{txt_funcion.value?.length || 0}}/100</mat-hint>
+    </mat-form-field>
+
+    <!--Comentario-->
+    <mat-form-field class="opciones-full-width" hintLabel="Máximo 200 caracteres">
+        <textarea maxlength="200" #txta_comment type="text" matInput placeholder="Comentario"
+            name="comentario" [(ngModel)]="tecnico.comentario"></textarea>
+        <mat-hint align="end">{{txta_comment.value?.length || 0}}/200</mat-hint>
+    </mat-form-field>
+
+    <!-- Boton para guardar -->
+    <div mat-dialog-actions>
+        <button *ngIf="this.personaControl.valid && this.funcionControl.valid" mat-flat-button color="primary"
+            (click)="vincular()" cdkFocusInitial>
+            <mat-icon class="tab-icon">group</mat-icon>
+            <span>Vincular</span>
+        </button>
+    </div>
+
+</div>

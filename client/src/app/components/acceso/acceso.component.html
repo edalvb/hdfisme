@@ -1,0 +1,41 @@
+<div align="center" class="centrar">
+
+  <mat-card class="acceso-card" style="margin: 0px;">
+    <div mat-card-avatar class="fisme-image"></div>
+    <mat-card-header>
+      <mat-card-title>Acceso</mat-card-title>
+      <mat-card-subtitle>FISME</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+      <!--Usuario-->
+      <mat-form-field appearance="outline" class="opciones-full-width">
+        <mat-label>Usuario</mat-label>
+        <input required maxlength="16" #txt_usuario type="text" matInput placeholder="Escriba su Usuario" name="usuario"
+          [(ngModel)]="user.usuario" [formControl]="vUsuario" [errorStateMatcher]="matcher">
+
+        <mat-error *ngIf="vUsuario.hasError('required')">
+          <span *ngIf="rUsuario == null">Usuario es <strong>requirido</strong></span>
+          <strong *ngIf="rUsuario != null">{{rUsuario}}</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <!--Contraseña-->
+      <mat-form-field appearance="outline" class="opciones-full-width">
+        <mat-label>Contraseña</mat-label>
+        <input required maxlength="16" #txt_contrasena type="password" matInput placeholder="Escriba su Contraseña" name="contrasena"
+          [(ngModel)]="user.contrasena" [formControl]="vContrasena" [errorStateMatcher]="matcher">
+
+        <mat-error *ngIf="vContrasena.hasError('required')">
+          <span *ngIf="rContrasena == null">Contraseña es <strong>requirido</strong></span>
+          <strong *ngIf="rContrasena != null">{{rContrasena}}</strong>
+        </mat-error>
+      </mat-form-field>
+
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" mat-button (click)="acceso()">Acceso</button>
+    </mat-card-actions>
+  </mat-card>
+
+</div>

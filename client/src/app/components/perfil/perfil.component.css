@@ -1,0 +1,42 @@
+.mat-list-icon {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.info {
+    text-align: justify;
+}
+
+.txtsa_UAP {
+  display: flex !important;
+}
+
+.mat-list-base .mat-list-item.mat-list-item-with-avatar,
+.mat-list-base .mat-list-option.mat-list-item-with-avatar {
+  height: 72px !important;
+}
+
+
+.subtable {
+    width: 96%;
+    border-collapse: collapse;
+  }
+  
+  .subtd {
+    font-size: 12px;
+    text-align: center;
+    height: 2em;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: rgb(199, 197, 197);
+  }
+  
+  .subtr {
+    height: 3em;
+  }
+  .encabezado {
+    background-color: rgb(199, 197, 197);
+    font-size: small;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: rgb(199, 197, 197);
+  }

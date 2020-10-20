@@ -1,0 +1,55 @@
+<mat-card>
+    <form class="hdfisme-form">
+        
+        <div>
+            <!--Bien-->
+            <mat-form-field appearance="outline">
+                <mat-label>Bien</mat-label>
+                <mat-select name="bien" [(ngModel)]="idbien" (selectionChange)="getResponsable(); resetAsigna();">
+                <mat-option *ngFor="let b of bien" [value]="b.idbien">
+                    {{b.denominacion}}
+                </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+
+        <!--Responsable Anterior-->
+        <mat-form-field appearance="outline" *ngIf="this.idbien">
+            <mat-label>Responsable Anterior</mat-label>
+            <mat-select name="responsable_anterior" [(ngModel)]="asigna.idresponsable_anterior">
+            <mat-option *ngFor="let r of responsablefilter" [value]="r.idresponsable">
+                {{r.administrativo}}: {{r.stock}}
+            </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!--Responsable Nuevo-->
+        <mat-form-field appearance="outline" *ngIf="this.idbien">
+            <mat-label>Responsable Nuevo</mat-label>
+            <mat-select name="responsable_anterior" [(ngModel)]="asigna.idresponsable_nuevo">
+            <mat-option *ngFor="let r of responsablefilter" [value]="r.idresponsable">
+                {{r.administrativo}}: {{r.stock}}
+            </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngIf="this.idbien">
+            <mat-label>Cantidad</mat-label>
+            <input matInput placeholder="Escribe una cantidad" name="catidad" [(ngModel)]="asigna.cantidad">
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" *ngIf="this.idbien">
+            <mat-label>Comentario</mat-label>
+            <textarea matInput placeholder="Escribe un comentario" name="comentario" [(ngModel)]="asigna.comentario"></textarea>
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          </mat-form-field>
+
+          <div>
+            <button mat-flat-button color="primary" (click)="save()" *ngIf="asigna.idresponsable_anterior &&asigna.idresponsable_nuevo && asigna.cantidad">Guardar
+              <mat-icon>save</mat-icon>
+            </button>
+          </div>
+    </form>
+</mat-card>

@@ -1,0 +1,165 @@
+<div style="text-align: center;">
+
+    <!--Rol-->
+    <mat-form-field appearance="outline" class="opciones-full-width" hintLabel="Máximo 100 caracteres">
+        <mat-label>Rol</mat-label>
+        <input required maxlength="100" #txt_rol type="text" matInput placeholder="Escribe el nombre del Rol" name="rol"
+            [(ngModel)]="rolUsuario.rol" [formControl]="cfDgFRol" [errorStateMatcher]="matcher">
+
+        <mat-error *ngIf="cfDgFRol.hasError('required')">
+            Rol es <strong>requirido</strong>
+        </mat-error>
+        <mat-hint align="end">{{txt_rol.value?.length || 0}}/100</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea name="descripcion" type="text" matInput [(ngModel)]="rolUsuario.descripcion"
+            placeholder="Escribe la Descripción del Rol"></textarea>
+        <mat-icon matSuffix>description</mat-icon>
+    </mat-form-field>
+</div>
+
+
+<div align="center">
+    <table class=" subtable mat-elevation-z8">
+        <tr class="subtr">
+            <th class="encabezado" scope="row">Accesos</th>
+            <th class="encabezado">Crear</th>
+            <th class="encabezado">Leer</th>
+            <th class="encabezado">Actualizar</th>
+            <th class="encabezado">Eliminar</th>
+        </tr>
+
+        <tr class="subtr">
+            <th class="encabezado">Usuario</th>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.usuario.crear"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <button mat-stroked-button color="accent" (click)="setAccion('usuario')">
+                    <span id="usuario">{{ convertir(rolUsuario.usuario.leer) }}</span>
+                </button>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.usuario.actualizar"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.usuario.eliminar"></mat-checkbox>
+            </td>
+        </tr>
+
+        <tr class="subtr">
+            <th class="encabezado">Bien</th>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.bien.crear"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <button mat-stroked-button color="accent" (click)="setAccion('bien')">
+                    <span id="bien">{{ convertir(rolUsuario.bien.leer) }}</span>
+                </button>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.bien.actualizar"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.bien.eliminar"></mat-checkbox>
+            </td>
+        </tr>
+
+        <tr class="subtr">
+            <th class="encabezado">Administrativo</th>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.administrativo.crear"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <button mat-stroked-button color="accent" (click)="setAccion('administrativo')">
+                    <span id="administrativo">{{ convertir(rolUsuario.administrativo.leer) }}</span>
+                </button>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.administrativo.actualizar"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.administrativo.eliminar"></mat-checkbox>
+            </td>
+        </tr>
+
+        <tr class="subtr">
+            <th class="encabezado">Proveedor</th>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.proveedor.crear"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <button mat-stroked-button color="accent" (click)="setAccion('proveedor')">
+                    <span id="proveedor">{{ convertir(rolUsuario.proveedor.leer) }}</span>
+                </button>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.proveedor.actualizar"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.proveedor.eliminar"></mat-checkbox>
+            </td>
+        </tr>
+
+        <tr class="subtr">
+            <th class="encabezado">Incidente</th>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.incidente.crear"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <button mat-stroked-button color="accent" (click)="setAccion('incidente')">
+                    <span id="incidente">{{ convertir(rolUsuario.incidente.leer) }}</span>
+                </button>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.incidente.actualizar"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.incidente.eliminar"></mat-checkbox>
+            </td>
+        </tr>
+
+        <tr class="subtr">
+            <th class="encabezado">Técnico</th>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.tecnico.crear"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <button mat-stroked-button color="accent" (click)="setAccion('tecnico')">
+                    <span id="tecnico">{{ convertir(rolUsuario.tecnico.leer) }}</span>
+                </button>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.tecnico.actualizar"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.tecnico.eliminar"></mat-checkbox>
+            </td>
+        </tr>
+
+        <tr class="subtr">
+            <th class="encabezado">Matenimiento</th>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.mantenimiento.crear"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <button mat-stroked-button color="accent" (click)="setAccion('mantenimiento')">
+                    <span id="mantenimiento">{{ convertir(rolUsuario.mantenimiento.leer) }}</span>
+                </button>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.mantenimiento.actualizar"></mat-checkbox>
+            </td>
+            <td class="subtd">
+                <mat-checkbox [(ngModel)]="rolUsuario.mantenimiento.eliminar"></mat-checkbox>
+            </td>
+        </tr>
+
+    </table>
+
+    <div style="text-align: center; margin-top: 1em;">
+        <button *ngIf="cfDgFRol.value" (click)="edit? actualizar() : crear()" mat-raised-button color="primary">Guardar</button>
+    </div>
+</div>

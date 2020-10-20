@@ -1,0 +1,97 @@
+.div-tabla {
+    width: 96%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+}
+
+table {
+    width: 100%;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+td, th {
+    width: 10%;
+}
+
+/*Slide Bar*/
+
+.example-container {
+    height: 100%;
+    width: 100%;
+}
+
+.example-sidenav-content {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.example-sidenav {
+    width: 100%;
+}
+
+/*Slide Bar*/
+
+/*Para seleccionar el receptor*/
+
+.non-selectable {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.div-enviar-mensaje {
+    position: absolute;
+    min-width: 100%;
+    bottom: -0%;
+}
+
+/*Div que contine los mensajes del emisor y receptor*/
+
+#contenido-mensajes {
+    width: 100%;
+    height: 400px;
+    position: absolute;
+    overflow-y: scroll;
+}
+
+/**/
+
+.mensaje-emisor {
+    text-align: right;
+}
+
+.mensaje-contenido-emisor {
+    vertical-align: top;
+    margin-left: 10%;
+    margin-bottom: 1%;
+    margin-right: 2%;
+    margin-left: 2%;
+    display: inline-flex;
+}
+
+.mensaje-receptor {
+    text-align: left;
+}
+
+.mensaje-contenido-receptor {
+    margin-right: 10%;
+    margin-bottom: 1%;
+    margin-right: 2%;
+    margin-left: 2%;
+    display: inline-flex;
+}
+
+.mat-card {
+    display: inline-block;
+    text-align: left;
+    padding: 8px;
+    margin: 0%;
+}

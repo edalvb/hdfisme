@@ -1,0 +1,101 @@
+<h1 mat-dialog-title>Tipos de Incidencia</h1>
+<div mat-dialog-content style="text-align: center;">
+  <mat-tab-group mat-align-tabs="center" dynamicHeight [selectedIndex]="selected.value"
+    (selectedIndexChange)="selected.setValue($event)" (selectedTabChange)="changeTab()">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">list</mat-icon>
+        Listar
+      </ng-template>
+
+      <div align="center">
+        <mat-form-field style="width: min-content" appearance="outline">
+          <mat-label>Buscar</mat-label>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Escribe un tipo de incidente">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div mat-dialog-content style="height: 280px; overflow: auto !important;">
+
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+          <!-- Tipos Column -->
+          <ng-container matColumnDef="tipo_incidente" sticky>
+            <th mat-header-cell *matHeaderCellDef> Tipos </th>
+            <td mat-cell *matCellDef="let models"> {{models.tipo_incidente}} </td>
+          </ng-container>
+
+          <!-- Comentario Column -->
+          <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef> Descripción </th>
+            <td mat-cell *matCellDef="let models"> {{models.descripcion}} </td>
+          </ng-container>
+
+          <!-- Acciones Column -->
+          <ng-container matColumnDef="acciones" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let are">
+              <button mat-icon-button matTooltip="Editar" aria-label="Boton que edita." (click)="edits(are);">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Eliminar" aria-label="Boton que elimina."
+                (click)="delete(are.idtipo_incidente);">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+
+        </table>
+
+      </div>
+
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon" *ngIf="edit == false">add</mat-icon>
+        <mat-icon class="tab-icon" *ngIf="edit == true">edit</mat-icon>
+        <span *ngIf="edit == false">Añadir</span>
+        <span *ngIf="edit == true">Editar</span>
+      </ng-template>
+
+      <div mat-dialog-content>
+
+        <!--Tipos de Incidencia-->
+        <mat-form-field class="opciones-full-width" hintLabel="Máximo 100 caracteres" appearance="outline">
+          <mat-label>Tipo de Incidencia</mat-label>
+          <input required maxlength="100" #text_tipo_incidente type="text" matInput placeholder="Escribe un tipo incidente"
+            name="tipo_incidente" [(ngModel)]="model.tipo_incidente" [formControl]="iForm"
+            [errorStateMatcher]="matcher">
+          <mat-error *ngIf="iForm.hasError('required')">
+            El Tipo de Incidencia es <strong>requirido</strong>
+          </mat-error>
+          <mat-hint align="end">{{text_tipo_incidente.value?.length || 0}}/100</mat-hint>
+        </mat-form-field>
+
+        <!--Descripción-->
+        <mat-form-field class="opciones-full-width" hintLabel="Máximo 200 caracteres" appearance="outline">
+          <mat-label>Descripción</mat-label>
+          <textarea maxlength="200" #textarea_descripcion type="text" matInput placeholder="Escribe una descripción"
+            name="descripcion" [(ngModel)]="model.descripcion"></textarea>
+          <mat-hint align="end">{{textarea_descripcion.value?.length || 0}}/200</mat-hint>
+        </mat-form-field>
+
+        <button *ngIf="this.iForm.value" mat-flat-button color="primary" (click)="edit? update() : save()"
+          cdkFocusInitial>
+          <mat-icon class="tab-icon" *ngIf="edit == false">save</mat-icon>
+          <mat-icon class="tab-icon" *ngIf="edit == true">update</mat-icon>
+          <span *ngIf="edit == false">Guardar</span>
+          <span *ngIf="edit == true">Actualizar</span>
+        </button>
+
+
+      </div>
+
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

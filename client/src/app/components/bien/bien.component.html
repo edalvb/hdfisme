@@ -1,0 +1,114 @@
+<div align="center" >
+  <mat-form-field appearance="outline" >
+    <mat-label>Buscar</mat-label>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Escribe un bien">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <button
+      [routerLink]="['/bien/add']"
+      mat-mini-fab
+      color="primary"
+      matTooltip="Añadir bien"
+      aria-label="Boton que crea un bien">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+
+<table
+    mat-table
+    [dataSource]="dataSource"
+    class="mat-elevation-z8">
+
+  <!-- Denominación Column -->
+  <ng-container matColumnDef="denominacion" sticky>
+    <th mat-header-cell *matHeaderCellDef> Denominación </th>
+    <td mat-cell *matCellDef="let bien"> {{bien.denominacion}} </td>
+  </ng-container>
+
+  <!-- Pecosa Column -->
+  <ng-container matColumnDef="pecosa" sticky>
+    <th mat-header-cell *matHeaderCellDef> Pecosa </th>
+    <td mat-cell *matCellDef="let bien"> {{bien.pecosa}} </td>
+  </ng-container>
+
+  <!-- Valor de Adquisición Column -->
+  <ng-container matColumnDef="valor_adquisicion">
+    <th mat-header-cell *matHeaderCellDef> Valor de Adquisición </th>
+    <td mat-cell *matCellDef="let bien"> {{bien.valor_adquisicion}} </td>
+  </ng-container>
+
+  <!-- Marca Column -->
+  <ng-container matColumnDef="marca">
+    <th mat-header-cell *matHeaderCellDef> Marca </th>
+    <td mat-cell *matCellDef="let bien"> {{bien.marca}} </td>
+  </ng-container>
+
+  <!-- Modelo Column -->
+  <ng-container matColumnDef="modelo">
+    <th mat-header-cell *matHeaderCellDef> Modelo </th>
+    <td mat-cell *matCellDef="let bien"> {{bien.modelo}} </td>
+  </ng-container>
+
+  <!-- Tipo Column -->
+  <ng-container matColumnDef="tipo">
+    <th mat-header-cell *matHeaderCellDef> Tipo </th>
+    <td mat-cell *matCellDef="let bien"> {{bien.tipo}} </td>
+  </ng-container>
+
+  <!-- Color Column -->
+  <ng-container matColumnDef="color">
+    <th mat-header-cell *matHeaderCellDef> Color </th>
+    <td mat-cell *matCellDef="let bien"> {{bien.color}} </td>
+  </ng-container>
+
+  <!-- Serie/Dimensiones Column -->
+  <ng-container matColumnDef="serie_dimension">
+    <th mat-header-cell *matHeaderCellDef> Serie/Dimensiones </th>
+    <td mat-cell *matCellDef="let bien"> {{bien.serie_dimension}} </td>
+  </ng-container>
+
+  <!-- Estado Column -->
+  <ng-container matColumnDef="estado">
+    <th mat-header-cell *matHeaderCellDef> Estado </th>
+    <td mat-cell *matCellDef="let bien"> {{bien.estado}} </td>
+  </ng-container>
+
+  <!-- Unidad de Medida Column -->
+  <ng-container matColumnDef="unidad_medida">
+    <th mat-header-cell *matHeaderCellDef> Unidad de Medida </th>
+    <td mat-cell *matCellDef="let bien"> {{bien.unidad_medida}} </td>
+  </ng-container>
+
+  <!-- Comentario Column -->
+  <ng-container matColumnDef="comentario">
+    <th mat-header-cell *matHeaderCellDef> Comentario </th>
+    <td mat-cell *matCellDef="let bien"> {{bien.comentario}} </td>
+  </ng-container>
+
+  <!-- Fecha de Adquisión Column -->
+  <ng-container matColumnDef="fecha_adquisicion">
+    <th mat-header-cell *matHeaderCellDef> Fecha de Adquisión </th>
+    <td mat-cell *matCellDef="let bien"> {{bien.fecha_adquisicion}} </td>
+  </ng-container>
+
+  <!-- Acciones Column -->
+  <ng-container matColumnDef="acciones" stickyEnd>
+    <th mat-header-cell *matHeaderCellDef>Acciones</th>
+    <td mat-cell *matCellDef="let bien">
+      <button mat-icon-button [routerLink]="['/bien/edit', bien.idbien]" matTooltip="Editar bien"
+        aria-label="Boton que edita un bien">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button (click)="deleteBien(bien.idbien)" mat-icon-button matTooltip="Eliminar bien"
+        aria-label="Boton que elimina un bien">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+</table>
+
+<!-- <mat-paginator [pageSizeOptions]="[2, 10, 25, 100]"></mat-paginator> -->

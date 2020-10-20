@@ -1,0 +1,80 @@
+<mat-sidenav-container [class.temadark]="cambiaTema" style="height: 100%;">
+
+  <mat-sidenav #drawer class="sidenav" fixedInViewport style="width: 200px;"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'">
+
+    <mat-toolbar color="primary" style="width: 100%;">
+      <mat-toolbar-row>
+        <span style="text-align: center;">Help Desk</span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <mat-nav-list>
+      <a mat-list-item [routerLink]="['/home']">
+        <mat-icon>home</mat-icon> Home
+      </a>
+      <!--<a mat-list-item [routerLink]="['/movimiento']">
+        <mat-icon>compare_arrows</mat-icon> Movimientos
+      </a>
+      <a mat-list-item [routerLink]="['/']">
+        <mat-icon>warning</mat-icon> Incidencias
+      </a>
+      <a mat-list-item [routerLink]="['/solicitud']">
+        <mat-icon>assignment</mat-icon> Solicitudes
+      </a>-->
+      <a mat-list-item [routerLink]="['informe']">
+        <mat-icon>assessment</mat-icon> Informes
+      </a>
+      <a mat-list-item [routerLink]="['conf']">
+        <mat-icon>settings</mat-icon> Configuración
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar style="z-index: 100; position: fixed;" color="primary" class="mat-elevation-z6" *ngIf="accede()">
+      <mat-toolbar-row>
+
+        <button fixedInViewport type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <span>FISME</span>
+
+        <span class="example-spacer"></span>
+
+        <button mat-icon-button aria-label="boton desplegable" matTooltip="Perfil" [matMenuTriggerFor]="menuperfil">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+
+        <mat-menu #menuperfil="matMenu">
+          <button mat-menu-item [routerLink]="['perfil']">
+            <mat-icon matPrefix>account_circle</mat-icon>
+            <span>Perfil</span>
+          </button>
+
+          <button mat-menu-item [routerLink]="['/mensaje']">
+            <mat-icon matPrefix>message</mat-icon>
+            <span>Mensajes</span>
+          </button>
+
+          <button mat-menu-item (click)="cambiarTema()">
+            <mat-icon matPrefix>invert_colors</mat-icon>
+            <span>Cambiar tema</span>
+          </button>
+
+          <button mat-menu-item aria-label="Cerrar Sesión" (click)="cerrarSesion()">
+            <mat-icon matPrefix>exit_to_app</mat-icon>
+            <span>Cerrar Sesión</span>
+          </button>
+        </mat-menu>
+
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <mat-drawer-container class="contenido-main">
+      <router-outlet></router-outlet>
+    </mat-drawer-container>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

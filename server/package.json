@@ -1,0 +1,41 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -w",
+    "dev": "nodemon build/index.js",
+    "start": "nodemon build/index.js"
+  },
+  "config": {
+    "myPort": "8080"
+  },
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "promise-mysql": "^3.3.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.6",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/morgan": "^1.9.0",
+    "@types/mysql": "^2.15.10",
+    "@types/mysql2": "github:types/mysql2",
+    "nodemon": "^1.19.4"
+  },
+  "keywords": [
+    "Help Desk",
+    "Universidad",
+    "Node JS",
+    "Proyecto",
+    "Prácticas Pre Profesionales"
+  ],
+  "author": "Edward Alexis Vásquez Becerra",
+  "license": "MIT"
+}

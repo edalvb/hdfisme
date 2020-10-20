@@ -1,0 +1,29 @@
+.logos {
+    display: inline-block;
+    text-align: center;
+}
+.fisme-image {
+    background-image: url('../../../assets/img/logo.png');
+    background-size: cover;
+    text-align: center;
+    display: inline-block;
+    width: 5em;
+    height: 5em;
+    margin: 0.2em;
+  }
+
+.acceso-card {
+    max-width: fit-content;
+}
+mat-card-header {
+    display: block;
+    text-align: center;
+}
+
+.centrar {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}

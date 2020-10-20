@@ -1,0 +1,28 @@
+<div align="center">
+    <mat-form-field appearance="outline">
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Escribe un Mantenimiento">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+</div>
+
+<div>
+
+    <table mat-table [dataSource]="dataSource">
+
+        <!-- Destinatario Column -->
+        <ng-container matColumnDef="destinatario">
+            <th mat-header-cell *matHeaderCellDef> Destinatarios</th>
+            <td style="font-size: small;" mat-cell *matCellDef="let des">
+                <p class="non-selectable">{{des.nombre}} (<b><i>{{des.usuario}}</i></b>)
+                    <button mat-icon-button [mat-dialog-close]="des" aria-label="enviar">
+                        <mat-icon>send</mat-icon>
+                    </button>
+                </p>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+    </table>
+</div>

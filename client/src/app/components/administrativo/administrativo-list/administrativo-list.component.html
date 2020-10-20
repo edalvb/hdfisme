@@ -1,0 +1,100 @@
+<div align="center">
+  <mat-form-field style="width: 300px;" appearance="outline">
+    <mat-label>Buscar</mat-label>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Escribe un Administrativo">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+  <button
+    [routerLink]="['/administrativo/add']"
+    mat-mini-fab
+    color="primary"
+    matTooltip="Añadir Adminstrativo"
+    aria-label="Botón que añade un administrativo">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+
+<table
+  mat-table
+  [dataSource]="dataSource"
+  class="mat-elevation-z8">
+
+  <!-- Nombres -->
+  <ng-container matColumnDef="nombres">
+    <th mat-header-cell *matHeaderCellDef>Nombres y Apellidos</th>
+    <td mat-cell *matCellDef="let admiper">{{admiper.administrativo}}</td>
+  </ng-container>
+
+  <!--DNI-->
+  <ng-container matColumnDef="dni">
+    <th mat-header-cell *matHeaderCellDef>DNI</th>
+    <td mat-cell *matCellDef="let admiper">{{admiper.DNI}}</td>
+  </ng-container>
+
+  <!--RUC-->
+  <ng-container matColumnDef="ruc">
+    <th mat-header-cell *matHeaderCellDef>RUC</th>
+    <td mat-cell *matCellDef="let admiper">{{admiper.RUC}}</td>
+  </ng-container>
+
+  <!--Email-->
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <td mat-cell *matCellDef="let admiper">{{admiper.email}}</td>
+  </ng-container>
+
+  <!--Area-->
+  <ng-container matColumnDef="area">
+    <th mat-header-cell *matHeaderCellDef>Area</th>
+    <td mat-cell *matCellDef="let admiper">{{admiper.area}}</td>
+  </ng-container>
+
+  <!--Fecha de Nacimiento-->
+  <ng-container matColumnDef="fechanacimiento">
+    <th mat-header-cell *matHeaderCellDef>Fecha de Nacimiento</th>
+    <td mat-cell *matCellDef="let admiper">{{admiper.fechanacimiento}}</td>
+  </ng-container>
+
+  <!--Celular-->
+  <ng-container matColumnDef="celular">
+    <th mat-header-cell *matHeaderCellDef>Celular</th>
+    <td mat-cell *matCellDef="let admiper">{{admiper.celular}}</td>
+  </ng-container>
+
+  <!--Telefono-->
+  <ng-container matColumnDef="telefono">
+    <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+    <td mat-cell *matCellDef="let admiper">{{admiper.telefono}}</td>
+  </ng-container>
+
+  <!--Dirección-->
+  <ng-container matColumnDef="direccion">
+    <th mat-header-cell *matHeaderCellDef>Dirección</th>
+    <td mat-cell *matCellDef="let admiper">{{admiper.direccion}}</td>
+  </ng-container>
+
+  <!--Delete & Edit-->
+  <ng-container matColumnDef="acciones" stickyEnd>
+    <th mat-header-cell *matHeaderCellDef>Acciones</th>
+    <td mat-cell *matCellDef="let admiper">
+      <button
+        mat-icon-button
+        [routerLink]="['/administrativo/edit', admiper.idpersona]"
+        matTooltip="Editar Administrativo"
+        aria-label="Boton que edita un administrativo">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button
+        (click)="deletePersona(admiper.idpersona)"
+        mat-icon-button
+        matTooltip = "Eliminar Administrativo"
+        aria-label="Botón que elimina un equipo">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+
+</table>

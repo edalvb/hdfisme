@@ -1,0 +1,499 @@
+<div align="center">
+
+    <mat-card style="width: max-content;">
+        <mat-list>
+            <!--Boton paara Editar Usuario-->
+            <div mat-subheader>Usuario
+                <!-- Boton para editar Usuario-->
+                <button *ngIf="!editUsuario" mat-icon-button aria-label="editar usuario" matTooltip="Editar Usuario"
+                    (click)="eUsuario()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <!-- Boton para guardar la actualizacion del Usuario-->
+                <button *ngIf="editUsuario" mat-icon-button aria-label="actualizar usuario"
+                    matTooltip="Actualizar Usuario" (click)="updateUsuario()">
+                    <mat-icon>save</mat-icon>
+                </button>
+            </div>
+
+            <!-- Usuario -->
+            <mat-list-item>
+                <mat-icon mat-list-icon>account_circle</mat-icon>
+                <div *ngIf="!editUsuario" class="info" mat-line><strong>Usuario</strong></div>
+                <div *ngIf="!editUsuario" class="info" mat-line>{{usuarioTemp.usuario}}</div>
+
+                <mat-form-field *ngIf="editUsuario">
+                    <mat-label>Usuario</mat-label>
+                    <input required maxlength="16" #txt_usuario type="text" matInput placeholder="Escriba su Usuario"
+                        name="usuario" [ngModel]="usuarioTemp.usuario" [formControl]="vUsuario"
+                        [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="vUsuario.hasError('required')">
+                        <span>Usuario es <strong>requirido</strong></span>
+                    </mat-error>
+                    <mat-hint align="end">{{txt_usuario.value?.length || 0}}/16</mat-hint>
+                </mat-form-field>
+
+            </mat-list-item>
+
+            <!-- Contraseña -->
+            <mat-list-item *ngIf="editUsuario">
+                <mat-icon mat-list-icon>vpn_key</mat-icon>
+
+                <mat-form-field>
+                    <mat-label>Contraseña</mat-label>
+                    <input id="password" required maxlength="16" #txt_contrasena type="password" matInput
+                        placeholder="Escriba su Contraseña" name="contrasena" [formControl]="vContrasena"
+                        [errorStateMatcher]="matcher">
+
+                    <button mat-button matSuffix mat-icon-button aria-label="contrasena" (click)="cambiarVisivilidad()">
+                        <mat-icon *ngIf="chPassword">visibility</mat-icon>
+                        <mat-icon *ngIf="!chPassword">visibility_off</mat-icon>
+                    </button>
+                    <mat-error *ngIf="vContrasena.hasError('required')">
+                        <span>La contraseña <strong>no se modificará</strong></span>
+                    </mat-error>
+                    <mat-hint align="end">{{txt_contrasena.value?.length || 0}}/16</mat-hint>
+
+                </mat-form-field>
+            </mat-list-item>
+
+            <!-- Comentario sobre el Usuario -->
+            <div *ngIf="(usuarioTemp.comentario != null) && !editUsuario">
+                <mat-list-item>
+                    <mat-icon mat-list-icon>account_circle</mat-icon>
+                    <div class="info" mat-line><strong>Comentario</strong></div>
+                </mat-list-item>
+
+                <mat-form-field>
+                    <textarea disabled style="color: black;" type="textarea" matInput
+                        name="usuario">{{usuarioTemp.comentario}}</textarea>
+                </mat-form-field>
+            </div>
+
+            <mat-form-field *ngIf="editUsuario">
+                <mat-label>Comentario sobre este usuario</mat-label>
+                <textarea maxlength="200" #txt_usuario type="textarea" matInput placeholder="Escriba su Comentario"
+                    name="usuario" [(ngModel)]="usuarioTemp.comentario"></textarea>
+                <mat-hint align="end">{{txt_usuario.value?.length || 0}}/200</mat-hint>
+            </mat-form-field>
+
+            <mat-divider></mat-divider>
+
+            <!-- ADMINISTRATIVO O PROVEEDOR -->
+            <!-- Boton para editar un Proveedor -->
+            <div mat-subheader *ngIf="myPerfil.razon_social != null">Proveedor
+                <button mat-icon-button aria-label="Editar proveedor" matTooltip="Editar Proveedor"
+                    (click)="eProveedor()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <!-- Boton para guardar la actualizacion del Proveedor-->
+                <button *ngIf="editProveedor && vRazonSocial.value && vRubro.value" mat-icon-button
+                    aria-label="actualizar usuario" matTooltip="Actualizar Proveedor" (click)="updateProveedor()">
+                    <mat-icon>save</mat-icon>
+                </button>
+            </div>
+
+
+            <!-- PROVEEDOR -->
+            <!-- Razón Social -->
+            <div *ngIf="(myPerfil.razon_social != null) && !editProveedor">
+                <mat-list-item>
+                    <mat-icon mat-list-icon>person</mat-icon>
+                    <div class="info" mat-line><strong>Razón Social</strong></div>
+                </mat-list-item>
+
+                <mat-form-field>
+                    <textarea disabled style="color: black;" type="textarea" matInput
+                        name="razon_social">{{myPerfil.razon_social}}</textarea>
+                </mat-form-field>
+            </div>
+
+            <mat-form-field class="txta_UAP" *ngIf="editProveedor">
+                <mat-label>Razón Social</mat-label>
+                <textarea maxlength="100" required #txt_razon_social type="textarea" matInput
+                    placeholder="Escriba su Razón Social" name="razon_social" [ngModel]="myPerfil.razon_social"
+                    [formControl]="vRazonSocial" [errorStateMatcher]="matcher"></textarea>
+
+                <mat-error *ngIf="vRazonSocial.hasError('required')">
+                    <span>Razón Social es <strong>requeria</strong></span>
+                </mat-error>
+                <mat-hint align="end">{{txt_razon_social.value?.length || 0}}/100</mat-hint>
+            </mat-form-field>
+
+            <p *ngIf="editProveedor"></p>
+
+            <!-- Rubro -->
+            <div *ngIf="(myPerfil.razon_social != null) && !editProveedor">
+                <mat-list-item>
+                    <mat-icon mat-list-icon>person</mat-icon>
+                    <div class="info" mat-line><strong>Rubro</strong></div>
+                </mat-list-item>
+
+                <mat-form-field>
+                    <textarea disabled style="color: black;" type="textarea" matInput
+                        name="rubro">{{myPerfil.rubro}}</textarea>
+                </mat-form-field>
+            </div>
+
+            <mat-form-field *ngIf="editProveedor">
+                <mat-label>Rubro</mat-label>
+                <textarea required maxlength="200" #txt_rubro type="textarea" matInput placeholder="Escriba el rubro"
+                    name="rubro" [ngModel]="myPerfil.rubro" [formControl]="vRubro"
+                    [errorStateMatcher]="matcher"></textarea>
+
+                <mat-error *ngIf="vRubro.hasError('required')">
+                    <span>Rubro <strong>requeria</strong></span>
+                </mat-error>
+                <mat-hint align="end">{{txt_rubro.value?.length || 0}}/200</mat-hint>
+            </mat-form-field>
+
+
+            <!-- ADMINISTRATIVO -->
+            <!-- Boton para editar un Administrativo -->
+            <div mat-subheader *ngIf="myPerfil.pnombre != null">Administrativo
+                <button mat-icon-button aria-label="Editar Administrativo" matTooltip="Editar Administrativo"
+                    (click)="eAdministrativo()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <!-- Boton para guardar la actualizacion del Administrativo-->
+                <button *ngIf="editAdministrativo && 
+                    vEmail.valid &&
+                    vCelular.valid &&
+                    vTelefono.valid &&
+                    vRuc.valid &&
+                    vPNombre.value &&
+                    vPApellido.value &&
+                    vSApellido.value &&
+                    vDni.valid" mat-icon-button aria-label="actualizar usuario" matTooltip="Actualizar Administrativo"
+                    (click)="updateAdministrativo()">
+                    <mat-icon>save</mat-icon>
+                </button>
+            </div>
+
+            <!-- Primer Nombre -->
+            <mat-list-item *ngIf="(myPerfil.pnombre != null)">
+                <mat-icon mat-list-icon>person</mat-icon>
+                <div *ngIf="!editAdministrativo" class="info" mat-line><strong>Primer Nombre</strong></div>
+                <div *ngIf="!editAdministrativo" class="info" mat-line> {{myPerfil.pnombre}} </div>
+
+                <mat-form-field *ngIf="editAdministrativo">
+                    <mat-label>Primer Nombre</mat-label>
+                    <input required maxlength="25" #txt_pnombre type="text" matInput
+                        placeholder="Escriba su primer nombre" name="pnombre" [ngModel]="myPerfil.pnombre"
+                        [formControl]="vPNombre" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="vPNombre.hasError('required')">
+                        <span>Primer Nombre <strong>requeria</strong></span>
+                    </mat-error>
+                    <mat-hint align="end">{{txt_pnombre.value?.length || 0}}/25</mat-hint>
+                </mat-form-field>
+            </mat-list-item>
+
+
+            <!-- Segundo Nombre -->
+            <mat-list-item *ngIf="(myPerfil.snombre != null)">
+                <mat-icon mat-list-icon>person</mat-icon>
+                <div *ngIf="!editAdministrativo" class="info" mat-line><strong>Segundo Nombre</strong></div>
+                <div *ngIf="!editAdministrativo" class="info" mat-line> {{myPerfil.snombre}} </div>
+
+                <mat-form-field *ngIf="editAdministrativo">
+                    <mat-label>Segundo Nombre</mat-label>
+                    <input maxlength="25" #txt_snombre type="text" matInput placeholder="Escriba su segundo nombre"
+                        name="snombre" [ngModel]="myPerfil.snombre" [formControl]="vSNombre">
+                    <mat-hint align="end">{{txt_snombre.value?.length || 0}}/25</mat-hint>
+                </mat-form-field>
+            </mat-list-item>
+
+            <!-- Apellido Paterno -->
+            <mat-list-item *ngIf="(myPerfil.papellido != null)">
+                <mat-icon mat-list-icon>person</mat-icon>
+                <div *ngIf="!editAdministrativo" class="info" mat-line><strong>Apellido Paterno</strong></div>
+                <div *ngIf="!editAdministrativo" class="info" mat-line> {{myPerfil.papellido}} </div>
+
+                <mat-form-field *ngIf="editAdministrativo">
+                    <mat-label>Apellido Paterno</mat-label>
+                    <input required maxlength="25" #txt_papellido type="text" matInput
+                        placeholder="Escriba su apellido paterno" name="papellido" [ngModel]="myPerfil.papellido"
+                        [formControl]="vPApellido" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="vPApellido.hasError('required')">
+                        <span>Apellido Paterno es <strong>requerio</strong></span>
+                    </mat-error>
+                    <mat-hint align="end">{{txt_papellido.value?.length || 0}}/25</mat-hint>
+                </mat-form-field>
+            </mat-list-item>
+
+            <!-- Apellido Materno -->
+            <mat-list-item *ngIf="(myPerfil.sapellido != null)">
+                <mat-icon mat-list-icon>person</mat-icon>
+                <div *ngIf="!editAdministrativo" class="info" mat-line><strong>Apellido Materno</strong></div>
+                <div *ngIf="!editAdministrativo" class="info" mat-line> {{myPerfil.sapellido}} </div>
+
+                <mat-form-field *ngIf="editAdministrativo">
+                    <mat-label>Apellido Materno</mat-label>
+                    <input required maxlength="25" #txt_sapellido type="text" matInput
+                        placeholder="Escriba su apellido materno" name="sapellido" [ngModel]="myPerfil.sapellido"
+                        [formControl]="vSApellido" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="vSApellido.hasError('required')">
+                        <span>Apellido Materno es <strong>requerio</strong></span>
+                    </mat-error>
+                    <mat-hint align="end">{{txt_sapellido.value?.length || 0}}/25</mat-hint>
+                </mat-form-field>
+            </mat-list-item>
+
+            <!-- DNI -->
+            <mat-list-item *ngIf="(myPerfil.dni != null)">
+                <mat-icon mat-list-icon>person</mat-icon>
+                <div *ngIf="!editAdministrativo" class="info" mat-line><strong>DNI</strong></div>
+                <div *ngIf="!editAdministrativo" class="info" mat-line> {{myPerfil.dni}} </div>
+
+                <mat-form-field *ngIf="editAdministrativo">
+                    <mat-label>DNI</mat-label>
+                    <input maxlength="8" minlength="8" #txt_dni type="text" matInput placeholder="Escriba su Dni"
+                        name="dni" [ngModel]="myPerfil.dni" [formControl]="vDni" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="vDni.hasError('pattern')">
+                        <span>Escriba solo <strong>números</strong></span>
+                    </mat-error>
+                    <mat-error *ngIf="vDni.hasError('minlength')">
+                        <span>Ingrese <strong>8</strong> dígitos</span>
+                    </mat-error>
+                    <mat-hint align="end">{{txt_dni.value?.length || 0}}/8</mat-hint>
+                </mat-form-field>
+            </mat-list-item>
+
+            <!-- Area -->
+            <mat-list-item *ngIf="myPerfil.area != null">
+                <mat-icon mat-list-icon>person</mat-icon>
+                <div class="info" mat-line> <strong>Area</strong></div>
+                <div class="info" mat-line>{{myPerfil.area}}</div>
+            </mat-list-item>
+
+
+            <!-- PERSONA -->
+            <!-- RUC  height: 90;-->
+            <!-- Cambiar el alto de los mat-list-item a 90px como mínimo-->
+            <mat-list-item *ngIf="(myPerfil.ruc != null)">
+                <mat-icon mat-list-icon>person</mat-icon>
+                <div *ngIf="!editAdministrativo && !editProveedor" class="info" mat-line><strong>RUC</strong></div>
+                <div *ngIf="!editAdministrativo && !editProveedor" class="info" mat-line> {{myPerfil.ruc}} </div>
+
+                <mat-form-field *ngIf="editAdministrativo || editProveedor">
+                    <mat-label>RUC</mat-label>
+                    <input maxlength="11" minlength="11" #txt_ruc type="text" matInput placeholder="Escriba su RUC"
+                        name="ruc" [ngModel]="myPerfil.ruc" [formControl]="vRuc" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="vRuc.hasError('pattern')">
+                        <span>Escriba solo <strong>números</strong></span>
+                    </mat-error>
+                    <mat-error *ngIf="vRuc.hasError('minlength')">
+                        <span>Ingrese <strong>11</strong> dígitos</span>
+                    </mat-error>
+                    <mat-hint align="end">{{txt_ruc.value?.length || 0}}/11</mat-hint>
+                </mat-form-field>
+            </mat-list-item>
+
+            <!-- Email -->
+            <mat-list-item *ngIf="(myPerfil.email != null)">
+                <mat-icon mat-list-icon>person</mat-icon>
+                <div *ngIf="!editAdministrativo && !editProveedor" class="info" mat-line><strong>Email</strong></div>
+                <div *ngIf="!editAdministrativo && !editProveedor" class="info" mat-line> {{myPerfil.email}} </div>
+
+                <mat-form-field *ngIf="editAdministrativo || editProveedor">
+                    <mat-label>Email</mat-label>
+                    <input #txt_ruc type="email" matInput placeholder="Escriba su email" name="email"
+                        [ngModel]="myPerfil.email" [formControl]="vEmail" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="vEmail.hasError('email')">
+                        <span>Por favor, ingrese un email válido</span>
+                    </mat-error>
+                </mat-form-field>
+            </mat-list-item>
+
+            <!-- Fecha de Nacimiento -->
+            <mat-list-item style="margin-top: 0.2em;" *ngIf="editAdministrativo || editProveedor || (myPerfil.fechanacimiento != null)">
+                <mat-icon mat-list-icon>person</mat-icon>
+                <div class="info" mat-line>
+                    <strong *ngIf="!editAdministrativo && !editProveedor">Fecha de Nacimiento</strong></div>
+                <div class="info" mat-line>
+                    <mat-form-field style="width: fit-content;">
+                        <mat-label *ngIf="editAdministrativo || editProveedor">Fecha de Nacimiento</mat-label>
+                        <input style="color: black;" name="fechanacimiento" matInput [matDatepicker]="fechanacimiento"
+                            [ngModel]="myPerfil.fechanacimiento" [formControl]="vFNaci" disabled>
+                        <mat-datepicker-toggle matSuffix [for]="fechanacimiento"></mat-datepicker-toggle>
+                        <mat-datepicker touchUi #fechanacimiento [disabled]="!editAdministrativo && !editProveedor"></mat-datepicker>
+
+                        <button *ngIf="editAdministrativo || editProveedor" mat-button matSuffix mat-icon-button aria-label="fechanaci"
+                            (click)="(myPerfil.fechanacimiento = null); (vFNaci.reset())" matTooltip="No asignar">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+            </mat-list-item>
+
+            <!-- Celular -->
+            <mat-list-item *ngIf="(myPerfil.celular != null)">
+                <mat-icon mat-list-icon>person</mat-icon>
+                <div *ngIf="!editAdministrativo && !editProveedor" class="info" mat-line><strong>Celular</strong></div>
+                <div *ngIf="!editAdministrativo && !editProveedor" class="info" mat-line> {{myPerfil.celular}} </div>
+
+                <mat-form-field *ngIf="editAdministrativo || editProveedor">
+                    <mat-label>Celular</mat-label>
+                    <span matPrefix>+51 &nbsp;</span>
+                    <input maxlength="9" minlength="9" #txt_celular type="tel" matInput placeholder="Escriba su Celular"
+                        name="celular" [ngModel]="myPerfil.celular" [formControl]="vCelular"
+                        [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="vCelular.hasError('pattern')">
+                        <span>Escriba solo <strong>números</strong></span>
+                    </mat-error>
+                    <mat-error *ngIf="vCelular.hasError('minlength')">
+                        <span>Ingrese <strong>9</strong> dígitos</span>
+                    </mat-error>
+                    <mat-hint align="end">{{txt_celular.value?.length || 0}}/9</mat-hint>
+                </mat-form-field>
+            </mat-list-item>
+
+            <!-- Telefono -->
+            <mat-list-item *ngIf="(myPerfil.telefono != null)">
+                <mat-icon mat-list-icon>person</mat-icon>
+                <div *ngIf="!editAdministrativo && !editProveedor" class="info" mat-line><strong>Teléfono</strong></div>
+                <div *ngIf="!editAdministrativo && !editProveedor" class="info" mat-line> {{myPerfil.telefono}} </div>
+
+                <mat-form-field *ngIf="editAdministrativo || editProveedor">
+                    <mat-label>Teléfono</mat-label>
+                    <span matPrefix>+51 &nbsp;</span>
+                    <input maxlength="9" minlength="9" #txt_telefono type="tel" matInput
+                        placeholder="Escriba su Teléfono" name="telefono" [ngModel]="myPerfil.telefono"
+                        [formControl]="vTelefono" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="vTelefono.hasError('pattern')">
+                        <span>Escriba solo <strong>números</strong></span>
+                    </mat-error>
+                    <mat-error *ngIf="vTelefono.hasError('minlength')">
+                        <span>Ingrese <strong>9</strong> dígitos</span>
+                    </mat-error>
+                    <mat-hint align="end">{{txt_telefono.value?.length || 0}}/9</mat-hint>
+                </mat-form-field>
+            </mat-list-item>
+
+            <!-- Dirección -->
+            <div *ngIf="(myPerfil.direccion != null && !editAdministrativo && !editProveedor)">
+                <mat-list-item>
+                    <mat-icon mat-list-icon>person</mat-icon>
+                    <div class="info" mat-line><strong>Dirección</strong></div>
+                </mat-list-item>
+
+                <mat-form-field>
+                    <div *ngIf="!editAdministrativo && !editProveedor" class="info" mat-line>
+                        <textarea disabled style="color: black;" type="textarea" matInput
+                            name="direccion">{{myPerfil.direccion}}</textarea>
+                    </div>
+                </mat-form-field>
+
+            </div>
+
+            <mat-form-field *ngIf="editAdministrativo || editProveedor">
+                <mat-label>Dirección</mat-label>
+                <textarea maxlength="100" #txt_direccion type="textarea" matInput placeholder="Escriba su Dirección"
+                    name="direccion" [ngModel]="myPerfil.direccion" [formControl]="vDireccion"></textarea>
+
+                <mat-hint align="end">{{txt_direccion.value?.length || 0}}/100</mat-hint>
+            </mat-form-field>
+
+
+            <mat-divider></mat-divider>
+
+            <div mat-subheader>Permisos</div>
+            <!-- Rol de Usuario -->
+            <mat-list-item *ngIf="myPerfil.rol != null">
+                <mat-icon mat-list-icon>account_circle</mat-icon>
+                <div class="info" mat-line><strong>Rol: </strong> <span
+                        style="width: fit-content;">{{myPerfil.rol}}</span></div>
+            </mat-list-item>
+
+            <!-- Rol del Usuario -->
+            <div *ngIf="myPerfil.descripcion_rol != null">
+                <mat-list-item>
+                    <mat-icon mat-list-icon>account_circle</mat-icon>
+                    <div class="info" mat-line><strong>Descripción del Rol: </strong></div>
+                </mat-list-item>
+
+                <mat-form-field>
+                    <textarea disabled style="color: black;" type="textarea" matInput
+                        name="usuario">{{myPerfil.descripcion_rol}}</textarea>
+                </mat-form-field>
+            </div>
+
+            <!-- Permisos -->
+            <div align="center" style="width: 100%; margin-bottom: 2em;">
+                <table class="subtable mat-elevation-z8">
+                    <tr class="subtr">
+                        <th class="encabezado" scope="row">Accesos</th>
+                        <th class="encabezado">Crear</th>
+                        <th class="encabezado">Leer</th>
+                        <th class="encabezado">Actualizar</th>
+                        <th class="encabezado">Eliminar</th>
+                    </tr>
+
+                    <tr class="subtr">
+                        <th class="encabezado">Usuario</th>
+                        <td class="subtd">{{ convertir(myPerfil.rusuario.crear) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rusuario.leer) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rusuario.actualizar) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rusuario.eliminar) }}</td>
+                    </tr>
+
+                    <tr class="subtr">
+                        <th class="encabezado">Bien</th>
+                        <td class="subtd">{{ convertir(myPerfil.rbien.crear) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rbien.leer) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rbien.actualizar) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rbien.eliminar) }}</td>
+                    </tr>
+
+                    <tr class="subtr">
+                        <th class="encabezado">Administrativo</th>
+                        <td class="subtd">{{ convertir(myPerfil.radministrativo.crear) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.radministrativo.leer) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.radministrativo.actualizar) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.radministrativo.eliminar) }}</td>
+                    </tr>
+
+                    <tr class="subtr">
+                        <th class="encabezado">Proveedor</th>
+                        <td class="subtd">{{ convertir(myPerfil.rproveedor.crear) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rproveedor.leer) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rproveedor.actualizar) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rproveedor.eliminar) }}</td>
+                    </tr>
+
+                    <tr class="subtr">
+                        <th class="encabezado">Incidente</th>
+                        <td class="subtd">{{ convertir(myPerfil.rincidente.crear) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rincidente.leer) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rincidente.actualizar) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rincidente.eliminar) }}</td>
+                    </tr>
+
+                    <tr class="subtr">
+                        <th class="encabezado">Técnico</th>
+                        <td class="subtd">{{ convertir(myPerfil.rtecnico.crear) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rtecnico.leer) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rtecnico.actualizar) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rtecnico.eliminar) }}</td>
+                    </tr>
+
+                    <tr class="subtr">
+                        <th class="encabezado">Mantenimiento</th>
+                        <td class="subtd">{{ convertir(myPerfil.rmantenimiento.crear) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rmantenimiento.leer) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rmantenimiento.actualizar) }}</td>
+                        <td class="subtd">{{ convertir(myPerfil.rmantenimiento.eliminar) }}</td>
+                    </tr>
+
+                </table>
+            </div>
+
+        </mat-list>
+
+
+
+    </mat-card>
+</div>

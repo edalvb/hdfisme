@@ -1,0 +1,99 @@
+<div align="center">
+    <mat-form-field appearance="outline">
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Escribe un Mantenimiento">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <button
+    [routerLink]="['/conf/mantenimiento-form/add']"
+    mat-mini-fab
+    color="primary"
+    matTooltip="Nuevo Mantenimiento"
+    aria-label="Botón de bnuevo mantenimiento">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+ 
+<div class="mat-elevation-z8 div-tabla">
+
+    <table mat-table [dataSource]="dataSource" matSort>
+
+        <!-- Tipo Column -->
+        <ng-container matColumnDef="tipo" sticky>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+            <td mat-cell *matCellDef="let mante"> {{mante.tipo}} </td>
+        </ng-container>
+
+        <!-- Prioridad Column -->
+        <ng-container matColumnDef="prioridad">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Prioridad </th>
+            <td mat-cell *matCellDef="let mante"> {{mante.prioridad}} </td>
+        </ng-container>
+
+        <!-- Estado Column -->
+        <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+            <td mat-cell *matCellDef="let mante"> {{mante.estado}} </td>
+        </ng-container>
+
+        <!-- grupo_bien Column -->
+        <ng-container matColumnDef="grupo_bien">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Grupo Bien </th>
+            <td mat-cell *matCellDef="let mante">
+                <div>
+                    {{mante.grupo_bien}}
+                    <button mat-icon-button aria-label="tareas" (click)="openDetallesGrupoDialog(mante.idgrupo_bien, mante.grupo_bien)">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- tecnico Column -->
+        <ng-container matColumnDef="tecnico">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Técnico </th>
+            <td mat-cell *matCellDef="let mante"> {{mante.tecnico}} </td>
+        </ng-container>
+
+        <!-- descripcion Column -->
+        <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </th>
+            <td mat-cell *matCellDef="let mante"> {{mante.descripcion}} </td>
+        </ng-container>
+
+        <!-- Tareas Column -->
+        <ng-container matColumnDef="tareas">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tareas </th>
+            <td mat-cell *matCellDef="let mante">
+                <button mat-icon-button aria-label="tareas" (click)="mostrarTareaDialog(mante.idmantenimiento)">
+                    <mat-icon>feedback</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <!-- Fecha de Mantenimiento Column -->
+        <ng-container matColumnDef="fecha_mantenimiento">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Mantenimiento </th>
+            <td mat-cell *matCellDef="let mante"> {{mante.fecha_mantenimiento}} </td>
+        </ng-container>
+
+        <!-- Fecha Fin Column -->
+        <ng-container matColumnDef="fecha_fin">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Finalización </th>
+            <td mat-cell *matCellDef="let mante"> {{mante.fecha_fin}} </td>
+        </ng-container>
+
+        <!-- acciones Column -->
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
+            <td mat-cell *matCellDef="let mante"> {{mante.fecha_fin}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas;" (click)="selection.toggle(row)">
+        </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>

@@ -1,0 +1,147 @@
+<h1 mat-dialog-title>{{nombre}}</h1>
+<div mat-dialog-content style="text-align: center;">
+  <mat-tab-group mat-align-tabs="center" dynamicHeight [selectedIndex]="selected.value"
+    (selectedIndexChange)="selected.setValue($event)" (selectedTabChange)="changeTab()">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">list</mat-icon>
+        Listar
+      </ng-template>
+
+      <div align="center">
+        <mat-form-field appearance="outline">
+          <mat-label>Buscar</mat-label>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Escribe lo que desees buscar">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div mat-dialog-content style="height: 280px; overflow: auto !important;">
+
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+          <!-- Nombre Column -->
+          <ng-container matColumnDef="nombre" *ngIf="existeThis('nombre');" sticky>
+            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <td mat-cell *matCellDef="let models"> {{models.nombre}} </td>
+          </ng-container>
+
+          <!-- Fecha Fabricación del Bien Column -->
+          <ng-container matColumnDef="fecha_fabricacion" *ngIf="existeThis('fecha_fabricacion');">
+            <th mat-header-cell *matHeaderCellDef> Fabricación </th>
+            <td mat-cell *matCellDef="let models"> {{models.fecha_fabricacion}} </td>
+          </ng-container>
+
+          <!-- Numero Column -->
+          <ng-container matColumnDef="numero" *ngIf="existeThis('numero');" sticky>
+            <th mat-header-cell *matHeaderCellDef> Numero </th>
+            <td mat-cell *matCellDef="let models"> {{models.numero}} </td>
+          </ng-container>
+
+          <!-- Año Column -->
+          <ng-container matColumnDef="year" *ngIf="existeThis('year');">
+            <th mat-header-cell *matHeaderCellDef> Año </th>
+            <td mat-cell *matCellDef="let models"> {{models.year}} </td>
+          </ng-container>
+
+          <!-- Comentario Column -->
+          <ng-container matColumnDef="comentario">
+            <th mat-header-cell *matHeaderCellDef> Comentario </th>
+            <td mat-cell *matCellDef="let models"> {{models.comentario}} </td>
+          </ng-container>
+
+          <!-- Delete Column -->
+          <ng-container matColumnDef="acciones" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let are">
+              <button mat-icon-button matTooltip="Editar" aria-label="Boton que edita." (click)="edits(are);">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Eliminar" aria-label="Boton que elimina." (click)="delete(are.id);">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+
+        </table>
+
+      </div>
+
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon" *ngIf="edit == false">add</mat-icon>
+        <mat-icon class="tab-icon" *ngIf="edit == true">edit</mat-icon>
+        <span *ngIf="edit == false">Añadir</span>
+        <span *ngIf="edit == true">Editar</span>
+      </ng-template>
+
+      <div mat-dialog-content>
+
+        <!--Nombre-->
+        <mat-form-field appearance="outline" *ngIf="existeThis('nombre');" class="opciones-full-width" hintLabel="Máximo 500 caracteres">
+          <mat-label>Nombre</mat-label>
+          <input required maxlength="500" #textarea_area type="text" matInput placeholder="Escribe un nombre" name="nombre"
+            [(ngModel)]="model.nombre" [formControl]="cfDgFormControl" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="cfDgFormControl.hasError('required')">
+            Nombre es <strong>requirido</strong>
+          </mat-error>
+          <mat-hint align="end">{{textarea_area.value?.length || 0}}/100</mat-hint>
+        </mat-form-field>
+
+        <!--Fecha-->
+        <mat-form-field appearance="outline" *ngIf="existeThis('fecha_fabricacion');">
+          <mat-label>Fecha de Fabricación</mat-label>
+          <input matInput [formControl]="serializedDate" [matDatepicker]="picker" placeholder="Escribe la fecha de Fabricación"
+            name="fecha_fabricacion" [(ngModel)]="model.fecha_fabricacion">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <!--Numero-->
+        <mat-form-field appearance="outline" *ngIf="existeThis('numero');" class="opciones-full-width" hintLabel="Máximo 3 caracteres">
+          <mat-label>Número</mat-label>
+          <input required maxlength="3" #numero type="number" matInput placeholder="Escribe un número" name="number"
+            [(ngModel)]="model.numero" [formControl]="cfDgFormControl" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="cfDgFormControl.hasError('required')">
+            Número es <strong>requirido</strong>
+          </mat-error>
+          <mat-hint align="end">{{numero.value?.length || 0}}/3</mat-hint>
+        </mat-form-field>
+
+        <!--Año-->
+        <mat-form-field appearance="outline" *ngIf="existeThis('year');" class="opciones-full-width" hintLabel="Máximo 4 caracteres">
+          <mat-label>Año</mat-label>
+          <input required maxlength="4" #year type="number" matInput placeholder="Escribe un año" name="year"
+            [(ngModel)]="model.year" [formControl]="cfDgFormControl" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="cfDgFormControl.hasError('required')">
+            Año es <strong>requirido</strong>
+          </mat-error>
+          <mat-hint align="end">{{year.value?.length || 0}}/4</mat-hint>
+        </mat-form-field>
+
+        <!--Comentario-->
+        <mat-form-field appearance="outline" class="opciones-full-width" hintLabel="Máximo 2000 caracteres">
+          <mat-label>Comentario</mat-label>
+          <textarea maxlength="2000" #textarea_comentario type="text" matInput placeholder="Escribe un comentario"
+            name="comentario" [(ngModel)]="model.comentario"></textarea>
+          <mat-hint align="end">{{textarea_comentario.value?.length || 0}}/500</mat-hint>
+        </mat-form-field>
+
+        <button *ngIf="this.cfDgFormControl.value" mat-flat-button color="primary"
+          (click)="edit? update() : save(model.nombre)" cdkFocusInitial>
+          <mat-icon class="tab-icon" *ngIf="edit == false">save</mat-icon>
+          <mat-icon class="tab-icon" *ngIf="edit == true">update</mat-icon>
+          <span *ngIf="edit == false">Guardar</span>
+          <span *ngIf="edit == true">Actualizar</span>
+        </button>
+
+      </div>
+
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

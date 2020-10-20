@@ -1,0 +1,65 @@
+<div align = "center">
+    <mat-form-field appearance="outline">
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Escribe un Responsable">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  
+    <button
+        [routerLink]="['/conf/responsable/add']"
+        mat-mini-fab
+        color="primary"
+        matTooltip="Añadir Responsable"
+        aria-label="Boton que crea un Responsable">
+    <mat-icon>add</mat-icon>
+    </button>
+</div>
+
+<table
+    mat-table 
+    [dataSource]="dataSource"
+    class="mat-elevation-z8">
+
+    <!-- Responsable Column -->
+  <ng-container matColumnDef="responsable" sticky>
+    <th mat-header-cell *matHeaderCellDef> Responsable </th>
+    <td mat-cell *matCellDef="let responsable"> {{responsable.administrativo}} </td>
+  </ng-container>
+
+  <!-- Bien Column -->
+  <ng-container matColumnDef="bien" sticky>
+    <th mat-header-cell *matHeaderCellDef> Bien </th>
+    <td mat-cell *matCellDef="let responsable"> {{responsable.bien}} </td>
+  </ng-container>
+
+  <!-- Stock Column -->
+  <ng-container matColumnDef="stock" sticky>
+    <th mat-header-cell *matHeaderCellDef> Stock </th>
+    <td mat-cell *matCellDef="let responsable"> {{responsable.stock}} </td>
+  </ng-container>
+
+  <!-- Comentario Column -->
+  <ng-container matColumnDef="comentario" sticky>
+    <th mat-header-cell *matHeaderCellDef> Comentario </th>
+    <td mat-cell *matCellDef="let responsable"> {{responsable.comentario}} </td>
+  </ng-container>
+
+  <!-- Acciones Column -->
+  <ng-container matColumnDef="acciones" stickyEnd>
+    <th mat-header-cell *matHeaderCellDef>Acciones</th>
+    <td mat-cell *matCellDef="let responsable">
+      <button mat-icon-button [routerLink]="['/conf/responsable/edit', responsable.idresponsable]" matTooltip="Editar Responsable"
+        aria-label="Boton que edita un Responsable">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button (click)="delete(responsable.idresponsable)" mat-icon-button matTooltip="Eliminar responsable"
+        aria-label="Boton que elimina un responsable">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+
+</table>

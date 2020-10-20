@@ -1,0 +1,111 @@
+<mat-drawer-container class="example-container">
+  <mat-drawer opened [ngStyle]="{'width':primerMensaje === true ? 'min-content' : '100%'}" #drawer
+    class="example-sidenav" [mode]="modo">
+
+    <!--<button mat-mini-fab color="primary" matTooltip="Nuevo Grupo" aria-label="Boton que crea un Grupo">
+        <mat-icon>group_circle</mat-icon>
+      </button>-->
+
+    <!---->
+
+    <div align="center">
+
+      <div style="display: inline-flex;">
+        <mat-form-field appearance="outline">
+          <mat-label>Buscar</mat-label>
+          <input matInput (keyup)="buscarMain($event.target.value)" placeholder="Escribe aquí">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <button style="display: inline-block; margin-top: 13px;" [matMenuTriggerFor]="menumopciones"
+          matTooltip="Acciones del Mensaje" mat-icon-button>
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menumopciones="matMenu">
+          <button (click)="openDestinatario()" mat-menu-item>Nuevo Mensaje</button>
+        </mat-menu>
+
+      </div>
+
+      <table mat-table [dataSource]="dataSource">
+
+        <!-- mensajes -->
+        <ng-container matColumnDef="mensajes">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let umensaje" class="non-selectable" style="cursor: pointer; padding: 10px 10px;"
+            (click)="leerMisMensajesCon(umensaje.idusuario, umensaje.usuario)">
+            <div mat-line>{{umensaje.usuario}}</div>
+            <div mat-line style="font-size: 0.8em;">
+              <div mat-line>{{umensaje.ultimo_mensaje}}</div>
+              <div style="text-align: right;"><i>{{obtenerDiaHora(umensaje.fecha_mensaje, true)}}</i></div>
+            </div>
+            
+          </td>
+        </ng-container>
+
+        <tr mat-header-row style="visibility: collapse;" *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+
+      </table>
+
+    </div>
+
+
+    <!---->
+
+  </mat-drawer>
+
+  <div *ngIf="primerMensaje">
+    <div style="display: flex;">
+      <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon mat-list-icon>menu</mat-icon>
+      </button>
+      <div style="margin: auto 0;"> {{destinatario.nombre}}</div>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div id="contenido-mensajes">
+
+      <div *ngFor="let mensaje of mensajes;" [class.mensaje-emisor]="mensaje.iddestinatario === destinatario.idusuario"
+        [class.mensaje-receptor]="mensaje.iddestinatario != destinatario.idusuario">
+
+        <div [class.mensaje-contenido-emisor]="mensaje.iddestinatario === destinatario.idusuario"
+          [class.mensaje-contenido-receptor]="mensaje.iddestinatario != destinatario.idusuario">
+          <mat-card>
+
+            <mat-card-content>
+              <p>{{mensaje.mensaje}}</p>
+              <div>
+                <i style="font-size: small;">{{obtenerDiaHora(mensaje.fecha_creacion)}}</i>
+              </div>
+            </mat-card-content>
+
+          </mat-card>
+
+          <button *ngIf="mensaje.iddestinatario === destinatario.idusuario" [matMenuTriggerFor]="menumensaje"
+            matTooltip="Acciones del Mensaje" style="margin: auto 0;" mat-icon-button>
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menumensaje="matMenu">
+            <button (click)="borrarMensaje(mensaje.idmensaje)" mat-menu-item>Borrar Mensaje</button>
+          </mat-menu>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="div-enviar-mensaje">
+      <mat-form-field style="min-width: -webkit-fill-available;" appearance="outline">
+        <mat-label>Mensaje</mat-label>
+        <input [formControl]="fcMmensaje" matInput placeholder="Escribe un mensaje">
+        <button type="submit" mat-icon-button matTooltip="Enviar Mensaje" (click)="nuevoMensajeCon()" matSuffix>
+          <mat-icon>send</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </div>
+
+</mat-drawer-container>

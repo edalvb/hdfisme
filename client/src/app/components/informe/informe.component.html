@@ -1,0 +1,19 @@
+<div align="center">
+
+    <mat-form-field>
+        <mat-label>Selecciona una opción</mat-label>
+        <mat-select [(value)]="seleccion">
+            <mat-option></mat-option>
+            <mat-option *ngFor="let opc of opciones" [value]="opc">{{opc}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-radio-group aria-label="Selecciona una opcion" [(ngModel)]="exportExcel">
+        <mat-radio-button matTooltip="Exportar a Excel" value="excel">Excel</mat-radio-button>
+        <mat-radio-button matTooltip="Exportar a PDF" value="pdf" checked>PDF</mat-radio-button>
+    </mat-radio-group>
+
+    <button mat-mini-fab color="primary" (click)="exportar()" matTooltip="Exportar" aria-label="Boton que exporta la tabla">
+        <mat-icon>library_books</mat-icon>
+    </button>
+</div>

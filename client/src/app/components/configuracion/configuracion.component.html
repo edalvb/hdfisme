@@ -1,0 +1,329 @@
+<div style="text-align: center;">
+
+  <!-- Usuarios -->
+  <mat-card class="conf-card">
+    <mat-card-header>
+      <mat-card-title>Usuario</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Usuarios de la FISME.
+      </p>
+    </mat-card-content>
+    <mat-card-actions style="text-align: center;">
+      <button name="usuario" class="button-options" (click)="openUsuarioDialog()" mat-mini-fab color="primary"
+        matTooltip="Ver Usuario" aria-label="Botón que añade un Usuario">
+        <mat-icon>create</mat-icon>
+      </button>
+
+      <button class="button-options" mat-mini-fab [matMenuTriggerFor]="menurolusuario" color="primary"
+        matTooltip="Opciones">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menurolusuario="matMenu">
+        <button mat-menu-item [routerLink]="['/conf/rolusuario']">
+          <span>Rol</span>
+        </button>
+
+        <button mat-menu-item (click)="openUsuarioVincularDialog();">
+          <span>Vicular</span>
+        </button>
+      </mat-menu>
+
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Administrativos -->
+  <mat-card class="conf-card">
+    <mat-card-header>
+      <mat-card-title>Administrativos</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Administrativos de la FISME.
+      </p>
+    </mat-card-content>
+    <mat-card-actions style="text-align: center;">
+      <button class="button-options" [routerLink]="['/administrativo']" mat-mini-fab color="primary"
+        matTooltip="Listar Administrativo" aria-label="Botón que lista a los Administrativos">
+        <mat-icon>list</mat-icon>
+      </button>
+      <button class="button-options" [routerLink]="['/administrativo/add']" mat-mini-fab color="primary"
+        matTooltip="Añadir Administrativo" aria-label="Botón que añade un Administrativo">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button class="button-options" mat-mini-fab [matMenuTriggerFor]="menumovimiento" color="primary"
+        matTooltip="Opciones">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menumovimiento="matMenu">
+        <button mat-menu-item (click)="openAreaDialog()">
+          <span>Área</span>
+        </button>
+      </mat-menu>
+
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Proveedores -->
+  <mat-card class="conf-card">
+    <mat-card-header>
+      <mat-card-title>Proveedores</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Proveedores de la FISME.
+      </p>
+    </mat-card-content>
+    <mat-card-actions style="text-align: center;">
+      <button class="button-options" [routerLink]="['/proveedor']" mat-mini-fab color="primary"
+        matTooltip="Listar Proveedor" aria-label="Botón que lista a los Proveedores">
+        <mat-icon>list</mat-icon>
+      </button>
+      <button class="button-options" [routerLink]="['/proveedor/add']" mat-mini-fab color="primary"
+        matTooltip="Añadir Proveedor" aria-label="Botón que añade un Proveedor">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Tecnicos -->
+  <mat-card class="conf-card">
+    <mat-card-header>
+      <mat-card-title>Técnicos</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Técnicos de la FISME.
+      </p>
+    </mat-card-content>
+    <mat-card-actions style="text-align: center;">
+      <button class="button-options" (click)="openTecnicoListarDialog()" mat-mini-fab color="primary"
+        matTooltip="Listar Técnicos" aria-label="Botón que muestra todos los Ténicos">
+        <mat-icon>list</mat-icon>
+      </button>
+      <button class="button-options" (click)="openTecnicoDialog()" mat-mini-fab color="primary"
+        matTooltip="Añadir Técnico" aria-label="Botón que añade un Técnico">
+        <mat-icon>group</mat-icon>
+      </button>
+
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Bienes -->
+  <mat-card class="conf-card">
+    <mat-card-header>
+      <mat-card-title>Bienes</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Bienes de la FISME.
+      </p>
+    </mat-card-content>
+    <mat-card-actions style="text-align: center;">
+
+      <button class="button-options" [routerLink]="['/bien']" mat-mini-fab color="primary" matTooltip="Listar bien"
+        aria-label="Botón que lista a los bienes">
+        <mat-icon>list</mat-icon>
+      </button>
+
+      <button class="button-options" [routerLink]="['/bien/add']" mat-mini-fab color="primary" matTooltip="Añadir bien"
+        aria-label="Botón que añade un bien">
+        <mat-icon>add</mat-icon>
+      </button>
+
+      <button class="button-options" mat-mini-fab color="primary" [matMenuTriggerFor]="menu_grupo_bien"
+        matTooltip="Agrupar bienes" aria-label="Botón que agrupa bienes">
+        <mat-icon>devices_other</mat-icon>
+      </button>
+      <mat-menu #menu_grupo_bien="matMenu">
+        <button mat-menu-item [routerLink]="['/conf/bien/grupo']">
+          <mat-icon>list</mat-icon>
+          <span>Listar Grupos</span>
+        </button>
+        <button mat-menu-item [routerLink]="['/conf/bien/grupo/add']">
+          <mat-icon>add</mat-icon>
+          <span>Nuevo Grupo</span>
+        </button>
+      </mat-menu>
+
+      <button class="button-options" mat-mini-fab [matMenuTriggerFor]="menu" color="primary" matTooltip="Opciones">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu">
+
+        <button mat-menu-item (click)="openEstadobienDialog();">
+          <span>Estado</span>
+        </button>
+
+        <button mat-menu-item (click)="openMarcaBienDialog();">
+          <span>Marca</span>
+        </button>
+
+        <button mat-menu-item (click)="openModeloBienDialog();">
+          <span>Modelo</span>
+        </button>
+
+        <button mat-menu-item (click)="openTipoBienDialog();">
+          <span>Tipo</span>
+        </button>
+
+        <button mat-menu-item (click)="openPecosaDialog();">
+          <span>Pecosa</span>
+        </button>
+
+        <button mat-menu-item (click)="openUnidadMedidaBienDialog();">
+          <span>Unidad de Medida</span>
+        </button>
+
+        <button mat-menu-item (click)="openColorBienDialog();">
+          <span>Color</span>
+        </button>
+
+      </mat-menu>
+
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Responsables -->
+  <mat-card class="conf-card">
+    <mat-card-header>
+      <mat-card-title>Responsables</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Responsables de la FISME.
+      </p>
+    </mat-card-content>
+    <mat-card-actions style="text-align: center;">
+
+      <button class="button-options" [routerLink]="['/conf/responsable']" mat-mini-fab color="primary"
+        matTooltip="Listar Responsable" aria-label="Botón que lista a los Responsable">
+        <mat-icon>list</mat-icon>
+      </button>
+      <button class="button-options" [routerLink]="['/conf/responsable/add']" mat-mini-fab color="primary"
+        matTooltip="Añadir Responsable" aria-label="Botón que añade un Responsable">
+        <mat-icon>add</mat-icon>
+      </button>
+
+      <button class="button-options" mat-mini-fab [matMenuTriggerFor]="menuresponsable" color="primary"
+        matTooltip="Opciones">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menuresponsable="matMenu">
+        <button mat-menu-item [routerLink]="['/conf/responsable/asigna']">
+          <span>Asignar</span>
+        </button>
+      </mat-menu>
+
+    </mat-card-actions>
+  </mat-card>
+
+
+
+  <!-- Incidentes -->
+  <mat-card class="conf-card">
+    <mat-card-header>
+      <mat-card-title>Incidentes</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Incidentes de la FISME.
+      </p>
+    </mat-card-content>
+    <mat-card-actions style="text-align: center;">
+
+      <button class="button-options" [routerLink]="['/conf/incidente']" mat-mini-fab color="primary"
+        matTooltip="Listar Incidentes" aria-label="Botón que lista a los Incidentes">
+        <mat-icon>list</mat-icon>
+      </button>
+
+      <button class="button-options" [routerLink]="['/conf/incidente-form/add']" mat-mini-fab color="primary"
+        matTooltip="Añadir Incidente" aria-label="Botón que añade un Incidentes">
+        <mat-icon>add</mat-icon>
+      </button>
+
+      <button class="button-options" mat-mini-fab [matMenuTriggerFor]="menuIncidencia" color="primary"
+        matTooltip="Opciones">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menuIncidencia="matMenu">
+
+        <button mat-menu-item (click)="openIncidenteEstadoDialog();">
+          <span>Estado</span>
+        </button>
+
+        <button mat-menu-item (click)="openIncidenteTipoDialog();">
+          <span>Tipo</span>
+        </button>
+
+        <button mat-menu-item (click)="openIncidenteGravedadDialog();">
+          <span>Gravedad</span>
+        </button>
+
+        <button mat-menu-item (click)="openIncidenteSolucionDialog();">
+          <span>Solución</span>
+        </button>
+
+      </mat-menu>
+
+    </mat-card-actions>
+  </mat-card>
+
+
+  <!-- Matenimiento -->
+  <mat-card class="conf-card">
+    <mat-card-header>
+      <mat-card-title>Matenimiento</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Matenimiento de los bienes de la FISME.
+      </p>
+    </mat-card-content>
+    <mat-card-actions style="text-align: center;">
+
+      <button class="button-options" [routerLink]="['/conf/mantenimiento']" mat-mini-fab color="primary"
+        matTooltip="Listar Matenimientos" aria-label="Botón que lista a los Matenimientos">
+        <mat-icon>list</mat-icon>
+      </button>
+
+      <button class="button-options" [routerLink]="['/conf/mantenimiento-form/add']" mat-mini-fab color="primary"
+        matTooltip="Añadir Matenimiento" aria-label="Botón que añade un Matenimiento">
+        <mat-icon>add</mat-icon>
+      </button>
+
+      <button class="button-options" mat-mini-fab [matMenuTriggerFor]="menuMatenimiento" color="primary"
+        matTooltip="Opciones">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menuMatenimiento="matMenu">
+
+        <button mat-menu-item (click)="openEstadoMantenimientoDialog();">
+          <span>Estado</span>
+        </button>
+
+        <button mat-menu-item (click)="openTipoMantenimientoDialog();">
+          <span>Tipo</span>
+        </button>
+
+        <button mat-menu-item (click)="openPrioridadMantenimientoDialog();">
+          <span>Prioridad</span>
+        </button>
+
+        <button mat-menu-item (click)="openTareaMantenimientoDialog();">
+          <span>Tarea</span>
+        </button>
+
+      </mat-menu>
+
+    </mat-card-actions>
+  </mat-card>
+
+</div>

@@ -1,0 +1,122 @@
+<h1 mat-dialog-title>Tarea de Mantenimiento</h1>
+
+<div mat-dialog-content style="text-align: center;">
+
+    <mat-tab-group mat-align-tabs="center" dynamicHeight [selectedIndex]="selected.value"
+        (selectedIndexChange)="selected.setValue($event)" (selectedTabChange)="changeTab()">
+
+        <mat-tab>
+ 
+            <ng-template mat-tab-label>
+                <mat-icon class="tab-icon">list</mat-icon>
+                Listar
+            </ng-template>
+ 
+            <div align="center">
+                <mat-form-field appearance="outline">
+                    <mat-label>Buscar</mat-label>
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Escribe una tarea">
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div mat-dialog-content style="height: 280px; overflow: auto !important;">
+
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                    <!-- tarea_mantenimiento Column -->
+                    <ng-container matColumnDef="tarea_mantenimiento">
+                        <th mat-header-cell *matHeaderCellDef> Tarea </th>
+                        <td mat-cell *matCellDef="let models"> {{models.tarea_mantenimiento}} </td>
+                    </ng-container>
+
+                    <!-- Descripción Column -->
+                    <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef> Descripcion </th>
+                        <td mat-cell *matCellDef="let models"> {{models.descripcion}} </td>
+                    </ng-container>
+
+                    <!-- Horas Column -->
+                    <ng-container matColumnDef="horas">
+                        <th mat-header-cell *matHeaderCellDef> Horas </th>
+                        <td mat-cell *matCellDef="let models"> {{models.horas}} </td>
+                    </ng-container>
+
+                    <!-- Acciones Column -->
+                    <ng-container matColumnDef="acciones" stickyEnd>
+                        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                        <td mat-cell *matCellDef="let m">
+                            <button mat-icon-button matTooltip="Editar" aria-label="Boton para editar."
+                                (click)="editar(m);">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Eliminar" aria-label="Boton para eliminar."
+                                (click)="eliminar(m.idtarea_mantenimiento);">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+
+                </table>
+
+            </div>
+
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="tab-icon" *ngIf="edit == false">add</mat-icon>
+                <mat-icon class="tab-icon" *ngIf="edit == true">edit</mat-icon>
+                <span *ngIf="edit == false">Añadir</span>
+                <span *ngIf="edit == true">Editar</span>
+            </ng-template>
+
+            <div mat-dialog-content>
+
+                <form>
+
+                    <!--Tarea-->
+                    <mat-form-field appearance="outline" class="opciones-full-width" hintLabel="Máximo 20 caracteres">
+                        <mat-label>Tarea</mat-label>
+                        <input required maxlength="20" #txt_tarea_mantenimiento type="text" matInput placeholder="Escribe una tarea" name="tarea_mantenimiento"
+                            [(ngModel)]="model.tarea_mantenimiento" [formControl]="cfDgFTarea" [errorStateMatcher]="matcher">
+
+                        <mat-error *ngIf="cfDgFTarea.hasError('required')">
+                            tarea_mantenimiento es <strong>requirida</strong>
+                        </mat-error>
+                        <mat-hint align="end">{{txt_tarea_mantenimiento.value?.length || 0}}/20</mat-hint>
+                    </mat-form-field>
+
+                    <!--Descripcion-->
+                    <mat-form-field appearance="outline" class="opciones-full-width" hintLabel="Máximo 200 caracteres">
+                        <mat-label>Descripción</mat-label>
+                        <textarea maxlength="200" #txta_descripcion type="text" matInput placeholder="Escribe una descripción"
+                            name="descripcion" [(ngModel)]="model.descripcion"></textarea>
+                        <mat-hint align="end">{{txta_descripcion.value?.length || 0}}/200</mat-hint>
+                    </mat-form-field>
+
+                    <!--Horas-->
+                    <mat-form-field appearance="outline" class="opciones-full-width">
+                        <mat-label>Horas</mat-label>
+                        <input type="number" matInput placeholder="Escribe el tiempo que toma la tarea" name="horas" [(ngModel)]="model.horas">
+                    </mat-form-field>
+                </form>
+
+                <div mat-dialog-actions>
+                    <button *ngIf="this.cfDgFTarea.valid" mat-flat-button color="primary"
+                        (click)="edit? actualizar() : crear()" cdkFocusInitial>
+                        <mat-icon class="tab-icon" *ngIf="edit == false">save</mat-icon>
+                        <mat-icon class="tab-icon" *ngIf="edit == true">update</mat-icon>
+                        <span *ngIf="edit == false">Guardar</span>
+                        <span *ngIf="edit == true">Actualizar</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </mat-tab>
+
+    </mat-tab-group>
+</div>

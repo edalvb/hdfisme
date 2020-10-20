@@ -1,0 +1,53 @@
+  .button-options {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+  
+  .opciones-full-width {
+    display: flex;
+    width: 96%;
+    margin-bottom: 10px;
+  }
+  
+  .tab-icon {
+    margin-right: 8px;
+  }
+  
+  mat-form-field, div.mat-dialog-actions{
+    display: inline-block !important;
+  }
+  
+  .example-small-box, .example-large-box {
+    display: inline-flex;
+    width: 500px;
+    margin: 5px;
+    padding-bottom: 16px;
+    border-radius: 8px;
+  }
+  
+mat-dialog-container {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+  
+  table {
+    margin-top: 5px;
+    width: 96%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+  }
+  
+  .mat-table-sticky:first-child {
+    border-right: 1px solid #e0e0e0;
+  }
+  
+  td.mat-column-star {
+    width: 20px;
+    padding-right: 8px;
+  }
+  
+  th.mat-column-position, td.mat-column-position {
+    padding-left: 0px;
+  }
+  

@@ -1,0 +1,155 @@
+<mat-card>
+
+  <form class="hdfisme-form">
+
+    <!--Denominación-->
+    <mat-form-field appearance="outline">
+      <mat-label>Denominación</mat-label>
+
+      <input type="text" matInput #txt_denominacion maxlength="200" placeholder="Escribe una Denominación"
+        name="denominacion" [(ngModel)]="bien.denominacion" [formControl]="denominacionForm">
+      <mat-icon matSuffix>description</mat-icon>
+
+      <mat-error *ngIf="denominacionForm.hasError('required')">
+        La denominación es <strong>requirida</strong>
+      </mat-error>
+      <mat-hint align="end">{{txt_denominacion.value?.length || 0}}/200</mat-hint>
+    </mat-form-field>
+
+    <!--Pecosa-->
+    <mat-form-field appearance="outline">
+      <mat-label>Pecosa</mat-label>
+      <mat-select name="pecosa" [(ngModel)]="bien.idpecosa">
+        <mat-option *ngFor="let p of pecosa" [value]="p.id">
+          {{p.numero}}: {{p.year}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!--Valor de Adquisición-->
+    <mat-form-field appearance="outline">
+      <mat-label>Valor de Adquisición</mat-label>
+      <input type="number" matInput placeholder="Valor de Adquisición" name="valor_adquisicion"
+        [(ngModel)]="bien.valor_adquisicion">
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+    </mat-form-field>
+
+    <!--Marca-->
+    <mat-form-field appearance="outline">
+      <mat-label>Marca</mat-label>
+      <mat-select name="marca" [(ngModel)]="bien.idmarca">
+        <mat-option *ngFor="let m of marca" [value]="m.id">
+          {{m.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!--Modelo-->
+    <mat-form-field appearance="outline">
+      <mat-label>Modelo</mat-label>
+      <mat-select name="modelo" [(ngModel)]="bien.idmodelo">
+        <mat-option *ngFor="let mo of modelo" [value]="mo.id">
+          {{mo.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!--Tipo-->
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo</mat-label>
+      <mat-select name="tipo" [(ngModel)]="bien.idtipo">
+        <mat-option *ngFor="let tbien of tipo" [value]="tbien.id">
+          {{tbien.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!--Tipo-->
+    <mat-form-field appearance="outline">
+      <mat-label>Color</mat-label>
+      <mat-select name="tipo" [(ngModel)]="bien.idcolor">
+        <mat-option *ngFor="let cbien of color" [value]="cbien.id">
+          {{cbien.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!--Serie/Dimensiones-->
+    <mat-form-field appearance="outline">
+      <mat-label>Serie/Dimensión</mat-label>
+      <input type="number" matInput placeholder="Escribe una Serie o Dimensión" name="serie_dimension"
+        [(ngModel)]="bien.serie_dimension">
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+    </mat-form-field>
+
+    <!--Estado-->
+    <mat-form-field appearance="outline">
+      <mat-label>Estado</mat-label>
+      <mat-select name="estado" [(ngModel)]="bien.idestado">
+        <mat-option *ngFor="let stados of estado" [value]="stados.id">
+          {{stados.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!--Unidad de Medida-->
+    <mat-form-field appearance="outline">
+      <mat-label>Unidad de Medida</mat-label>
+      <mat-select name="unidad_medida" [(ngModel)]="bien.idunidad_medida">
+        <mat-option *ngFor="let unMedida of unidadMedida" [value]="unMedida.id">
+          {{unMedida.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!--Comentario-->
+    <mat-form-field appearance="outline">
+      <mat-label>Comentario</mat-label>
+      <textarea matInput placeholder="Comentario" name="coment" [(ngModel)]="bien.comentario"></textarea>
+    </mat-form-field>
+
+    <!--Fecha de Adquisición-->
+    <mat-form-field appearance="outline">
+      <input matInput [formControl]="serializedDate" [matDatepicker]="picker"
+        placeholder="Elige una Fecha de Adquisición" name="fecha_adquisicion" [(ngModel)]="bien.fecha_adquisicion">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!--Administrativo-->
+    <mat-form-field *ngIf="!edit" appearance="outline">
+      <mat-label>Administrativo</mat-label>
+      <mat-select name="administrativo" [(ngModel)]="bien.administrativo" [formControl]="administrativoForm">
+        <mat-option *ngFor="let adminst of administrativo" [value]="adminst.idpersona">
+          {{adminst.pnombre}} {{adminst.snombre}} {{adminst.papellido}} {{adminst.sapellido}}
+        </mat-option>
+      </mat-select>
+
+      <mat-error *ngIf="administrativoForm.hasError('required')">
+        El Administrativo es <strong>requirido</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <!--Stock-->
+    <mat-form-field *ngIf="!edit" appearance="outline">
+      <mat-label>Stock</mat-label>
+
+      <input type="text" matInput #txt_stock maxlength="16" placeholder="Escribe el stock" name="stock"
+        [(ngModel)]="bien.stock" [formControl]="stockForm">
+      <mat-icon matSuffix>description</mat-icon>
+
+      <mat-error *ngIf="stockForm.hasError('required')">
+        El stock es <strong>requirido</strong>
+      </mat-error>
+      <mat-hint align="end">{{txt_stock.value?.length || 0}}/16</mat-hint>
+    </mat-form-field>
+
+    <div>
+      <button mat-flat-button color="primary" (click)="edit ? updateBien() : saveBien()">Guardar
+        <mat-icon>save</mat-icon>
+      </button>
+    </div>
+
+  </form>
+
+</mat-card>

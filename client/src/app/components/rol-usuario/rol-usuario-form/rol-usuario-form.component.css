@@ -1,0 +1,23 @@
+.subtable {
+    width: 96%;
+    border-collapse: collapse;
+}
+
+.subtd {
+    text-align: center;
+    height: 2em;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: rgb(199, 197, 197);
+}
+
+.subtr {
+    height: 3em;
+}
+.encabezado {
+    background-color: rgb(199, 197, 197);
+    font-size: small;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: rgb(199, 197, 197);
+}

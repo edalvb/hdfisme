@@ -1,0 +1,218 @@
+<div align="center">
+
+    <mat-card>
+
+        <form class="hdfisme-form">
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Tipo de Mantenimiento ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <mat-form-field class="opciones-full-width" appearance="outline">
+                <mat-label>Tipo de Mantenimiento</mat-label>
+                <mat-select name="tipo_mantenimiento" [(ngModel)]="mantenimiento.idtipo" [formControl]="fcTipo"
+                    [errorStateMatcher]="matcher">
+                    <mat-option *ngFor="let t of tipos" [value]="t.idtipo_mantenimiento">
+                        {{t.tipo_mantenimiento}}
+                    </mat-option>
+                </mat-select>
+
+                <!-- Muestra el error debajo -->
+                <mat-error *ngIf="fcTipo.hasError('required')">
+                    Tipo de Mantenimiento es <strong>requirido</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prioridad de Mantenimiento ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <mat-form-field class="opciones-full-width" appearance="outline">
+                <mat-label>Prioridad de Mantenimiento</mat-label>
+                <mat-select name="prioridad_mantenimiento" [(ngModel)]="mantenimiento.idprioridad"
+                    [formControl]="fcPrioridad" [errorStateMatcher]="matcher">
+                    <mat-option *ngFor="let p of prioridades" [value]="p.idprioridad_mantenimiento">
+                        {{p.prioridad_mantenimiento}}
+                    </mat-option>
+                </mat-select>
+
+                <!-- Muestra el error debajo -->
+                <mat-error *ngIf="fcPrioridad.hasError('required')">
+                    Prioridad de Mantenimiento es <strong>requirido</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Estado de Mantenimiento ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <mat-form-field class="opciones-full-width" appearance="outline">
+                <mat-label>Estado de Mantenimiento</mat-label>
+                <mat-select name="prioridad_mantenimiento" [(ngModel)]="mantenimiento.idestado" [formControl]="fcEstado"
+                    [errorStateMatcher]="matcher">
+                    <mat-option *ngFor="let e of estados" [value]="e.idestado_mantenimiento">
+                        {{e.estado_mantenimiento}}
+                    </mat-option>
+                </mat-select>
+
+                <!-- Muestra el error debajo -->
+                <mat-error *ngIf="fcEstado.hasError('required')">
+                    Estado de Mantenimiento es <strong>requirido</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Grupo de Bienes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <mat-form-field class="opciones-full-width" appearance="outline">
+                <mat-label>Grupo de Bienes</mat-label>
+                <mat-select name="grupo_bien" [(ngModel)]="mantenimiento.idgrupo_bien" [formControl]="fcGrupotarea"
+                    [errorStateMatcher]="matcher">
+                    <mat-option *ngFor="let gb of grupoBienes" [value]="gb.idgrupo_bien">
+                        {{gb.grupo_bien}}
+                    </mat-option>
+                </mat-select>
+
+                <!-- Muestra el error debajo -->
+                <mat-error *ngIf="fcGrupotarea.hasError('required')">
+                    Grupo de tareaes es <strong>requirido</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Técnico ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <mat-form-field class="opciones-full-width" appearance="outline">
+                <mat-label>Técnicos</mat-label>
+                <mat-select name="tecnico" [(value)]="mantenimiento.idtecnico" [formControl]="fcTecnico">
+                    <mat-option><strong>Ninguno</strong></mat-option>
+                    <mat-optgroup *ngFor="let group of tecnicos" [label]="group.nombre">
+                        <mat-option *ngFor="let t of group.tecnico" [value]="t.idtecnico">
+                            {{t.tecnico}}
+                        </mat-option>
+                    </mat-optgroup>
+                </mat-select>
+
+                <!-- Muestra el error debajo -->
+                <mat-error *ngIf="fcTecnico.hasError('required')">
+                    Técnico es <strong>requirido</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Descripción ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <mat-form-field appearance="outline">
+                <mat-label>Descripción</mat-label>
+                <textarea appearance="outline" type="textarea" maxlength="500" #txta_descripcion matInput
+                    placeholder="Escribe una Descripción" name="descripcion" [(ngModel)]="mantenimiento.descripcion"
+                    [formControl]="fcDescripcion"></textarea>
+
+                <!-- Muestra el error debajo -->
+                <mat-error *ngIf="fcDescripcion.hasError('required')">
+                    Descripción es <strong>requirido</strong>
+                </mat-error>
+
+                <mat-hint align="end">{{txta_descripcion.value?.length || 0}}/500</mat-hint>
+            </mat-form-field>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Fecha de Mantenimiento ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha de Mantenimiento</mat-label>
+                <input matInput [formControl]="fcFechaMantenimiento" [matDatepicker]="pickerFechaMantenimiento"
+                    placeholder="Elije una fecha para el Mantenimiento" name="fecha_mantenimiento"
+                    [(ngModel)]="mantenimiento.fecha_mantenimiento">
+                <mat-datepicker-toggle matSuffix [for]="pickerFechaMantenimiento"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #pickerFechaMantenimiento color="primary"></mat-datepicker>
+
+                <!-- Muestra el error debajo -->
+                <mat-error *ngIf="fcFechaMantenimiento.hasError('required')">
+                    Fecha de Mantenimiento es <strong>requirido</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Fecha de Finalización ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha de Finalización</mat-label>
+                <input matInput [matDatepicker]="pickerFechaFin" placeholder="Elije una fecha de Finalización"
+                    name="fecha_fin" [(ngModel)]="mantenimiento.fecha_fin">
+                <mat-datepicker-toggle matSuffix [for]="pickerFechaFin"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #pickerFechaFin color="primary"></mat-datepicker>
+            </mat-form-field>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Tareas ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <mat-accordion>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Tareas
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            Selecciona las tareas
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <!-- Contenido del Panel de Expansión -->
+
+                    <div align="center">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Buscar</mat-label>
+                            <input matInput (keyup)="applyFilter($event)" placeholder="Escribe una tarea">
+                            <mat-icon matSuffix>search</mat-icon>
+                        </mat-form-field>
+                    </div>
+
+                    <table mat-table [dataSource]="dataSource" matSort>
+
+                        <!-- Checkbox Column -->
+                        <ng-container matColumnDef="select">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                <mat-checkbox (change)="$event ? masterToggle() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                    [aria-label]="checkboxLabel()">
+                                </mat-checkbox>
+                            </th>
+                            <td mat-cell *matCellDef="let row">
+                                <mat-checkbox (click)="$event.stopPropagation()"
+                                    (change)="$event ? selection.toggle(row) : null"
+                                    [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                                </mat-checkbox>
+                            </td>
+                        </ng-container>
+
+                        <!-- Tarea Column -->
+                        <ng-container matColumnDef="tarea_mantenimiento" sticky>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tarea </th>
+                            <td mat-cell *matCellDef="let tarea"> {{tarea.tarea_mantenimiento}} </td>
+                        </ng-container>
+
+                        <!-- Descripcion Column -->
+                        <ng-container matColumnDef="descripcion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </th>
+                            <td mat-cell *matCellDef="let tarea"> {{tarea.descripcion}} </td>
+                        </ng-container>
+
+                        <!-- Horas Column -->
+                        <ng-container matColumnDef="horas">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Horas </th>
+                            <td mat-cell *matCellDef="let tarea"> {{tarea.horas}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columnas;" (click)="selection.toggle(row)">
+                        </tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+
+                    <!-- Contenido del Panel de Expansión -->
+
+                </mat-expansion-panel>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                </mat-expansion-panel>
+            </mat-accordion>
+
+            <div style="margin-top: 32px;">
+                <button mat-flat-button color="primary" (click)="edit ? actualizar() : crear()" *ngIf="
+                fcTipo.valid &&
+                fcPrioridad.valid &&
+                fcEstado.valid &&
+                fcGrupotarea.valid &&
+                fcTecnico.valid &&
+                fcDescripcion.valid &&
+                fcFechaMantenimiento.valid">Guardar
+                    <mat-icon>save</mat-icon>
+                </button>
+            </div>
+
+        </form>
+
+    </mat-card>
+
+</div>

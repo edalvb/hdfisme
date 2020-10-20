@@ -1,0 +1,147 @@
+<div style="text-align: center;">
+
+    <mat-card>
+
+        <mat-list-item>
+            <mat-icon mat-list-icon>account_circle</mat-icon>
+            <div mat-line><strong>Creado por</strong></div>
+            <div mat-line style="margin-bottom: 1%;">{{usuario.usuario}}</div>
+        </mat-list-item>
+
+        <form class="hdfisme-form">
+
+            <!--Estado-->
+            <mat-form-field class="opciones-full-width" appearance="outline">
+                <mat-label>Estado</mat-label>
+                <mat-select name="estado_incidente" [(ngModel)]="incidente.idestado" [formControl]="estadoForm"
+                    [errorStateMatcher]="matcher">
+                    <mat-option *ngFor="let estado of estadoIncidentes" [value]="estado.idestado_incidente">
+                        {{estado.estado_incidente}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="estadoForm.hasError('required')">
+                    Estado de Incidente es <strong>requirido</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <!--Gravedad-->
+            <mat-form-field class="opciones-full-width" appearance="outline">
+                <mat-label>Gravedad</mat-label>
+                <mat-select name="gravedad_incidente" [(ngModel)]="incidente.idgravedad" [formControl]="gravedadForm"
+                    [errorStateMatcher]="matcher">
+                    <mat-option *ngFor="let gravedad of gravedadIncidentes" [value]="gravedad.idgravedad_incidente">
+                        {{gravedad.gravedad_incidente}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="gravedadForm.hasError('required')">
+                    Gravedad de Incidente es <strong>requirido</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <!--Tipo-->
+            <mat-form-field class="opciones-full-width" appearance="outline">
+                <mat-label>Tipo</mat-label>
+                <mat-select name="tipo_incidente" [(ngModel)]="incidente.idtipo" [formControl]="tipoForm"
+                    [errorStateMatcher]="matcher">
+                    <mat-option *ngFor="let tipo of tipoIncidentes" [value]="tipo.idtipo_incidente">
+                        {{tipo.tipo_incidente}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="tipoForm.hasError('required')">
+                    Gravedad de Incidente es <strong>requirido</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Persona Sin Vincular -->
+            <mat-form-field class="opciones-full-width" appearance="outline">
+                <mat-label>Técnicos</mat-label>
+                <mat-select [(value)]="incidente.idtecnico">
+                    <mat-option><strong>Ninguno</strong></mat-option>
+                    <mat-optgroup *ngFor="let group of personaGrupe" [label]="group.nombre">
+                        <mat-option *ngFor="let t of group.tecnico" [value]="t.idtecnico">
+                            {{t.tecnico}}
+                        </mat-option>
+                    </mat-optgroup>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- Fecha de Cierre -->
+            <mat-form-field>
+                <mat-label>Fecha de Cierre</mat-label>
+                <input name="fecha_cierre" matInput [matDatepicker]="fecha_cierre" [(ngModel)]="incidente.fecha_cierre"
+                    [formControl]="vFNaci">
+                <mat-datepicker-toggle matSuffix [for]="fecha_cierre"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #fecha_cierre>
+                </mat-datepicker>
+
+                <button mat-button matSuffix mat-icon-button aria-label="fechanaci"
+                    (click)="(incidente.fecha_cierre = null); (vFNaci.reset())" matTooltip="Aún no Cerrar">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <!-- Grupo de bienes -->
+            <mat-form-field class="opciones-full-width" appearance="outline">
+                <mat-label>Grupo de bienes</mat-label>
+                <mat-select name="grupo_bien" [(ngModel)]="incidente.idgrupo_bien">
+                    <mat-option><strong>Ninguno</strong></mat-option>
+                    <mat-option *ngFor="let gb of grupo_bien" [value]="gb.idgrupo_bien">
+                        {{gb.grupo_bien}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!--incidente-->
+            <mat-form-field appearance="outline">
+                <mat-label>Incidente</mat-label>
+                <textarea appearance="outline" type="text" maxlength="100" #txt_incidente matInput
+                    placeholder="Escribe el Incidente" name="incidente" [(ngModel)]="incidente.incidente"
+                    [formControl]="incidenteForm"></textarea>
+
+                <mat-error *ngIf="incidenteForm.hasError('required')">
+                    El Incidente es <strong>requirido</strong>
+                </mat-error>
+                <mat-hint align="end">{{txt_incidente.value?.length || 0}}/100</mat-hint>
+            </mat-form-field>
+
+            <!--Descripción-->
+            <mat-form-field appearance="outline">
+                <mat-label>Descripción</mat-label>
+                <textarea appearance="outline" type="text" maxlength="500" #txta_descripcion matInput
+                    placeholder="Escribe una Descripción" name="descripcion" [(ngModel)]="incidente.descripcion">
+                </textarea>
+
+                <mat-hint align="end">{{txta_descripcion.value?.length || 0}}/500</mat-hint>
+            </mat-form-field>
+
+            <!-- Solucion -->
+            <mat-form-field class="opciones-full-width" appearance="outline">
+                <mat-label>Solución</mat-label>
+                <mat-select name="incidente_solucion" [(ngModel)]="incidente.idsolucion">
+                    <mat-option><strong>Ninguno</strong></mat-option>
+                    <mat-option *ngFor="let i_sol of solucionIncidentes" [value]="i_sol.idsolucion_incidente">
+                        {{i_sol.solucion_incidente}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="example-button-row">
+                <button
+                    *ngIf="this.estadoForm.value && this.gravedadForm.value && this.tipoForm.value && this.incidenteForm.value"
+                    mat-flat-button color="primary" (click)="edit? actualizar() : guardar()" cdkFocusInitial>
+                    <mat-icon class="tab-icon" *ngIf="edit == false">save</mat-icon>
+                    <mat-icon class="tab-icon" *ngIf="edit == true">update</mat-icon>
+                    <span *ngIf="edit == false">Guardar</span>
+                    <span *ngIf="edit == true">Actualizar</span>
+                </button>
+            </div>
+
+        </form>
+
+    </mat-card>
+
+
+</div>

@@ -1,0 +1,69 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+mat-card {
+    margin: 24px;
+    text-align: center;
+  }
+  
+.hdfisme-form {
+    min-width: 180px;
+    width: 100%;
+  }
+  
+mat-form-field {
+    width: 100%;
+    min-width: 200px;
+    max-width: 300px;
+    margin: 5px;
+}
+
+.div-tabla {
+  width: 96%;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-bottom: 2%;
+}
+
+.padding-bottom-toolbar {
+  padding-top: 64px;
+}
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(./assets/material-icons-fonts/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url(./assets/material-icons-fonts/MaterialIcons-Regular.woff2) format('woff2'),
+       url(./assets/material-icons-fonts/MaterialIcons-Regular.woff) format('woff'),
+       url(./assets/material-icons-fonts/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}

@@ -1,0 +1,110 @@
+<div style="text-align: center;">
+
+  <mat-card>
+
+    <form class="hdfisme-form">
+      <mat-form-field appearance="outline">
+        <mat-label>DNI</mat-label>
+        <input appearance="outline" type="number" maxlength="8"
+          oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" matInput
+          placeholder="Escribe el DNI" name="dni" [(ngModel)]="administrativo.dni">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>RUC</mat-label>
+        <input type="number" maxlength="11"
+          oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" matInput
+          placeholder="Escribe el RUC" name="ruc" [(ngModel)]="administrativo.ruc">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Primer Nombre</mat-label>
+        <input type="text" matInput placeholder="Escribe el Primer Nombre" name="pnombre"
+          [(ngModel)]="administrativo.pnombre">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Segundo Nombre</mat-label>
+        <input type="text" matInput placeholder="Escribe el Segundo Nombre" name="snombre"
+          [(ngModel)]="administrativo.snombre">
+      </mat-form-field>
+ 
+      <mat-form-field appearance="outline">
+        <mat-label>Apellido Paterno</mat-label>
+        <input type="text" matInput placeholder="Escribe el Apellido Paterno" name="papellido"
+          [(ngModel)]="administrativo.papellido">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Apellido Materno</mat-label>
+        <input type="text" matInput placeholder="Escribe el Apellido Materno" name="sapellido"
+          [(ngModel)]="administrativo.sapellido">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <input matInput [formControl]="serializedDate" [matDatepicker]="picker"
+          placeholder="Elije una fecha de nacimiento" name="fecha" [(ngModel)]="administrativo.fechanacimiento">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker color="primary"></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input type="email" name="email" [(ngModel)]="administrativo.email" placeholder="Escribe un email" matInput
+          [formControl]="emailFormControl">
+        <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+          Por favor, introduce una dirección de correo electrónico válida
+        </mat-error>
+        <mat-error *ngIf="emailFormControl.hasError('required')">
+          El correo electrónico es <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <!--Area-->
+      <mat-form-field class="opciones-full-width" appearance="outline">
+        <mat-label>Area</mat-label>
+        <mat-select name="area" [(ngModel)]="administrativo.idarea" [formControl]="cfDgFArea"
+            [errorStateMatcher]="matcher">
+            <mat-option *ngFor="let a of areas" [value]="a.id">
+                {{a.nombre}}
+            </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="cfDgFArea.hasError('required')">
+            Area es <strong>requirida</strong>
+        </mat-error>
+    </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Dirección</mat-label>
+        <input type="address" matInput placeholder="Escribe una dirección" name="address"
+          [(ngModel)]="administrativo.direccion">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Celular</mat-label>
+        <input type="number" matInput maxlength="12"
+          oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+          placeholder="Escribe un celular" name="cel" [(ngModel)]="administrativo.celular">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Teléfono</mat-label>
+        <input type="number" matInput maxlength="20"
+          oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+          placeholder="Escribe un teléfono" name="tel" [(ngModel)]="administrativo.telefono">
+      </mat-form-field>
+
+      <div class="example-button-row">
+        <button mat-flat-button color="primary" (click)="edit ? updateAdministrativo() : saveAdministrativo()">Guardar
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+
+    </form>
+
+  </mat-card>
+
+
+</div>

@@ -1,0 +1,46 @@
+<mat-card>
+
+    <form class="hdfisme-form">
+
+        <!--Bien-->
+        <mat-form-field appearance="outline">
+            <mat-label>Bien</mat-label>
+            <mat-select name="bien" [(ngModel)]="responsable.idbien">
+            <mat-option *ngFor="let b of bien" [value]="b.idbien">
+                {{b.denominacion}}
+            </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!--Administrativo-->
+        <mat-form-field appearance="outline">
+            <mat-label>Administrativo</mat-label>
+            <mat-select name="administrativo" [(ngModel)]="responsable.idpersona">
+            <mat-option *ngFor="let a of administrativo" [value]="a.idpersona">
+                {{a.pnombre}} {{a.snombre}} {{a.papellido}} {{a.sapellido}}
+            </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!--Stock-->
+        <mat-form-field appearance="outline" >
+            <mat-label>Stock</mat-label>
+            <input type="number" matInput placeholder="Escribe el Stock" name="stock" [(ngModel)]="responsable.stock">
+            <mat-icon matSuffix>shopping_cart</mat-icon>
+        </mat-form-field>
+
+        <!--Comentario-->
+        <mat-form-field appearance="outline" >
+            <mat-label>Comentario</mat-label>
+            <textarea type="textarea" matInput placeholder="Escribe el Comentario" name="comentario" [(ngModel)]="responsable.comentario"></textarea>
+            <mat-icon matSuffix>description</mat-icon>
+        </mat-form-field>
+
+        <div>
+            <button mat-flat-button color="primary" (click)="edit ? update() : save()">Guardar
+              <mat-icon>save</mat-icon>
+            </button>
+          </div>
+    </form>
+
+</mat-card>

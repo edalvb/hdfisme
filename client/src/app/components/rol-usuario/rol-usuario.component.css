@@ -1,0 +1,99 @@
+.tablemain {
+  margin-top: 5px;
+  width: 96%;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-bottom: 2%;
+  position: absolute;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  cursor: pointer;
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  justify-content: center;
+  overflow: hidden;
+  display: flex;
+}
+
+mat-card {
+  cursor: pointer;
+  align-content: center;
+  margin: 0.5em;
+  display: inline-block;
+  text-align: left;
+  padding: 0.1em;
+}
+
+mat-card-title {
+  margin-top: 0.3em;
+  margin-bottom: 0px;
+}
+
+mat-list {
+  padding-top: 0px;
+}
+
+mat-checkbox {
+  margin: 0.5em 0.5em;
+}
+
+strong{
+  font-size: 0.9em;
+}
+
+.iconos-card{
+  font-size: 0.9em;
+}
+
+span {
+  font-size: 0.9em;
+}
+
+.descripcion {
+  display: block;
+    list-style-type: decimal;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+.subtable {
+  width: 96%;
+  border-collapse: collapse;
+}
+
+.subtd {
+  text-align: center;
+  height: 2em;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-color: rgb(199, 197, 197);
+}
+
+.subtr {
+  height: 3em;
+}
+.encabezado {
+  background-color: rgb(199, 197, 197);
+  font-size: small;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-color: rgb(199, 197, 197);
+}
