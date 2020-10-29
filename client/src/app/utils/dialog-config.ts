@@ -1,4 +1,4 @@
-import { OnInit } from '@angular/core';
+import { OnInit, Directive } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -11,6 +11,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 
+@Directive()
 export class ConfigDialog implements OnInit {
 
   /**
