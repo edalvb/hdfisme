@@ -625,7 +625,7 @@ export class UsuarioVincularComponent {
   usuarioControl = new FormControl('', [Validators.required]);
 
   administrativos: Persona[] = [];
-  proveedores: Persona[];
+  proveedores: Persona[] = [];
   usuarios = [];
   personaGrupe: personaGrupo[];
 
@@ -750,8 +750,8 @@ export class TecnicoVincularDialogComponent implements OnInit {
 
   matcher = new MyErrorStateMatcher();
 
-  administrativos: Persona[];
-  proveedores: Persona[];
+  administrativos: Persona[] = [];
+  proveedores: Persona[] = [];
 
   personaGrupe: personaGrupo[];
 

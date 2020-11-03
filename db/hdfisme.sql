@@ -2,9 +2,7 @@
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-SET SESSION SQL_MODE = 'ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-SET GLOBAL SQL_MODE = 'ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
 -- Schema hdfisme
@@ -135,6 +133,7 @@ CREATE TABLE IF NOT EXISTS `hdfisme`.`bien` (
   INDEX `fk_bien_pecosa1_idx` (`idpecosa` ASC) VISIBLE,
   INDEX `fk_bien_unidad_medida_bien1_idx` (`idunidad_medida` ASC) VISIBLE,
   INDEX `fk_bien_color1_idx` (`idcolor` ASC) VISIBLE,
+  UNIQUE INDEX `denominacion_UNIQUE` (`denominacion` ASC) VISIBLE,
   CONSTRAINT `fk_marca`
     FOREIGN KEY (`idmarca`)
     REFERENCES `hdfisme`.`marca_bien` (`id`)
@@ -370,6 +369,17 @@ ENGINE = InnoDB;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
+-- Table `hdfisme`.`solucion_incidente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `hdfisme`.`solucion_incidente` (
+  `idsolucion_incidente` INT NOT NULL AUTO_INCREMENT,
+  `solucion_incidente` VARCHAR(2000) NOT NULL,
+  PRIMARY KEY (`idsolucion_incidente`))
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
 -- Table `hdfisme`.`incidente`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `hdfisme`.`incidente` (
@@ -381,6 +391,7 @@ CREATE TABLE IF NOT EXISTS `hdfisme`.`incidente` (
   `idtecnico` INT NULL,
   `idgrupo_bien` INT NULL,
   `incidente` VARCHAR(100) NOT NULL,
+  `idsolucion` INT NULL,
   `descripcion` VARCHAR(500) NULL,
   `fecha_creacion` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `fecha_actualizacion` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -392,6 +403,7 @@ CREATE TABLE IF NOT EXISTS `hdfisme`.`incidente` (
   INDEX `fk_incidente_usuario2_idx` (`idsolicitante` ASC) VISIBLE,
   INDEX `fk_incidente_tecnico1_idx` (`idtecnico` ASC) VISIBLE,
   INDEX `fk_incidente_grupo_bien1_idx` (`idgrupo_bien` ASC) VISIBLE,
+  INDEX `fk_incidente_solucion_incidente1_idx` (`idsolucion` ASC) VISIBLE,
   CONSTRAINT `fk_incidente_gravedad_incidente1`
     FOREIGN KEY (`idgravedad`)
     REFERENCES `hdfisme`.`gravedad_incidente` (`idgravedad_incidente`)
@@ -420,6 +432,11 @@ CREATE TABLE IF NOT EXISTS `hdfisme`.`incidente` (
   CONSTRAINT `fk_incidente_grupo_bien1`
     FOREIGN KEY (`idgrupo_bien`)
     REFERENCES `hdfisme`.`grupo_bien` (`idgrupo_bien`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_incidente_solucion_incidente1`
+    FOREIGN KEY (`idsolucion`)
+    REFERENCES `hdfisme`.`solucion_incidente` (`idsolucion_incidente`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -566,6 +583,66 @@ CREATE TABLE IF NOT EXISTS `hdfisme`.`asigna` (
     FOREIGN KEY (`idresponsable_anterior`)
     REFERENCES `hdfisme`.`responsable` (`idresponsable`)
     ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `hdfisme`.`grupo_mensaje`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `hdfisme`.`grupo_mensaje` (
+  `idgrupo_mensaje` INT NOT NULL AUTO_INCREMENT,
+  `idusuario_creador` INT NOT NULL,
+  `idusuario_actualizador` INT NOT NULL,
+  `grupo_mensaje` VARCHAR(25) NOT NULL,
+  `fecha_creacion` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_actualizacion` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idgrupo_mensaje`),
+  INDEX `fk_grupo_mensaje_usuario1_idx` (`idusuario_creador` ASC) VISIBLE,
+  INDEX `fk_grupo_mensaje_usuario2_idx` (`idusuario_actualizador` ASC) VISIBLE,
+  CONSTRAINT `fk_grupo_mensaje_usuario1`
+    FOREIGN KEY (`idusuario_creador`)
+    REFERENCES `hdfisme`.`usuario` (`idusuario`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_grupo_mensaje_usuario2`
+    FOREIGN KEY (`idusuario_actualizador`)
+    REFERENCES `hdfisme`.`usuario` (`idusuario`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `hdfisme`.`mensaje`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `hdfisme`.`mensaje` (
+  `idmensaje` INT NOT NULL AUTO_INCREMENT,
+  `idgrupo_mensaje` INT NULL,
+  `idemisor` INT NOT NULL,
+  `iddestinatario` INT NULL,
+  `mensaje` VARCHAR(500) NOT NULL,
+  `fecha_creacion` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idmensaje`),
+  INDEX `fk_mensaje_usuario1_idx` (`idemisor` ASC) VISIBLE,
+  INDEX `fk_mensaje_grupo_mensaje1_idx` (`idgrupo_mensaje` ASC) VISIBLE,
+  INDEX `fk_mensaje_usuario2_idx` (`iddestinatario` ASC) VISIBLE,
+  CONSTRAINT `fk_mensaje_usuario1`
+    FOREIGN KEY (`idemisor`)
+    REFERENCES `hdfisme`.`usuario` (`idusuario`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_mensaje_grupo_mensaje1`
+    FOREIGN KEY (`idgrupo_mensaje`)
+    REFERENCES `hdfisme`.`grupo_mensaje` (`idgrupo_mensaje`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_mensaje_usuario2`
+    FOREIGN KEY (`iddestinatario`)
+    REFERENCES `hdfisme`.`usuario` (`idusuario`)
+    ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
@@ -729,6 +806,12 @@ CREATE TABLE IF NOT EXISTS `hdfisme`.`vista_mantenimiento` (`idmantenimiento` IN
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
+-- Placeholder table for view `hdfisme`.`vista_all_usuario_nombre`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `hdfisme`.`vista_all_usuario_nombre` (`idusuario` INT, `usuario` INT, `nombre` INT);
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
 -- procedure create_administrativo
 -- -----------------------------------------------------
 
@@ -748,7 +831,8 @@ CREATE PROCEDURE `create_administrativo` (
     IN DNI char(8),
     IN area INT)
 BEGIN
-    DECLARE id INT; -- Declaramos una variable que almacenará el "id" de la tabla "persona" y la tabla "administrativo"
+	-- Declaramos una variable que almacenará el "id" de la tabla "persona" y la tabla "administrativo"
+    DECLARE id INT;
     
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -765,7 +849,8 @@ BEGIN
 		ROLLBACK;
 	END;
     
-    SET id = IFNULL((SELECT MAX(idpersona) + 1 FROM `hdfisme`.`persona`), 0); -- devuelve 0 si la primera expresion es NULL, sino devolverá el máximo de idpersona de la tabla persona.
+    -- devuelve 0 si la primera expresion es NULL, sino devolverá el máximo de idpersona de la tabla persona.
+    SET id = IFNULL((SELECT MAX(idpersona) + 1 FROM `hdfisme`.`persona`), 0);
     SET AUTOCOMMIT = FALSE;
     
     START TRANSACTION;
@@ -1030,10 +1115,11 @@ CREATE PROCEDURE create_responsable (
     IN stock DECIMAL (16,3),
     IN comentario VARCHAR(500))
 BEGIN
-    /*VERIFICA SI HAY UN ADMINISTRATIVO CON ESE BIEN*/
+	/*VERIFICA SI HAY UN ADMINISTRATIVO CON ESE BIEN*/
     SELECT COUNT(*) FROM `hdfisme`.`responsable`
     WHERE `idbien`= bien AND `idpersona` = administrativo
     INTO @validar;
+    
     IF (@validar = 0) THEN
         INSERT INTO `hdfisme`.`responsable` (
             `idbien`,
@@ -1045,6 +1131,9 @@ BEGIN
             administrativo,
             stock,
             comentario);
+	ELSE
+		SIGNAL SQLSTATE '45001'
+			SET MESSAGE_TEXT = 'Éste administrativo ya tiene éste bien asignado.';
     END IF;
 END$$
 
@@ -1076,6 +1165,9 @@ BEGIN
 			`stock` = stock,
 			`comentario` = comentario
 		WHERE `idresponsable` = responsable;
+	ELSE
+		SIGNAL SQLSTATE '45001'
+			SET MESSAGE_TEXT = 'Éste administrativo ya tiene éste bien asignado.';
     END IF;
 END$$
 
@@ -1128,24 +1220,26 @@ CREATE PROCEDURE `create_asigna`(
 BEGIN
     DECLARE stocka INT;
     DECLARE stockn INT;
+    DECLARE mensaje_error VARCHAR(200) DEFAULT "Lo siento, no pude realizar la vinculación";
     
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
 		SIGNAL SQLSTATE '45001'
-			SET MESSAGE_TEXT = 'Lo siento, no pude realizar la vinculación';
+			SET MESSAGE_TEXT = mensaje_error;
 		SHOW ERRORS LIMIT 1;
 		ROLLBACK;
 	END; 
 	DECLARE EXIT HANDLER FOR SQLWARNING
 	BEGIN
 		SIGNAL SQLSTATE '45001'
-			SET MESSAGE_TEXT = 'Lo siento, no pude realizar la vinculación';
+			SET MESSAGE_TEXT = mensaje_error;
 		SHOW WARNINGS LIMIT 1;
 		ROLLBACK;
 	END;
     
 	SET AUTOCOMMIT = FALSE;
 
+    -- Verifica que los responsables no sean la misma persona
 	IF (responsable_anterior != responsable_nuevo) THEN
 		SELECT `idbien` FROM `responsable` 
 		WHERE `idresponsable` = responsable_anterior
@@ -1155,6 +1249,7 @@ BEGIN
 		WHERE `idresponsable` = responsable_nuevo
 		INTO @bienn;
 
+        -- Verifica que los bienes de los responsables sean los mismos.
 		IF(@biena = @bienn) THEN
 			SELECT `stock` FROM `responsable` 
 			WHERE `idresponsable` = responsable_anterior
@@ -1189,8 +1284,17 @@ BEGIN
 						cantidad,
 						comentario);
 				COMMIT;
+            ELSE
+				SET mensaje_error = 'No tiene suficientes bienes.';
+                SIGNAL SQLSTATE '45001';
 			END IF;
+        ELSE
+			SET mensaje_error = 'Los responsables deben tener los mismos bienes.';
+            SIGNAL SQLSTATE '45001';
 		END IF;
+    ELSE
+		SET mensaje_error = 'Los responsables no pueden ser la misma persona.';
+		SIGNAL SQLSTATE '45001';
     END IF;
     
 END$$
@@ -1922,6 +2026,189 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
+-- function fn_solo_usuario
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `hdfisme`$$
+CREATE FUNCTION `fn_solo_usuario` (iduser INT)
+RETURNS VARCHAR(103) READS SQL DATA
+BEGIN
+	DECLARE r_usuario VARCHAR(103) DEFAULT NULL;
+	DECLARE idper INT DEFAULT NULL;
+	DECLARE adminis INT DEFAULT NULL;
+	-- Comprobar si la persona tiene asignado un usuario
+	SELECT idpersona
+	FROM persona
+	WHERE idusuario = iduser
+	INTO idper;
+    
+	IF(idper IS NOT NULL) THEN
+		-- Aqui se ejecutará el script si el usuario está vinculado a una persona
+		-- Si el usuario esta vinculado a una persona (administrativo o proveedor), de acuerdo a quien está vinculado, devuelveme estos datos.
+		SELECT a.idpersona
+		FROM persona AS p, administrativo AS a
+		WHERE idusuario = iduser AND a.idpersona = p.idpersona
+		INTO adminis;
+		-- Comprobar si la persona es un Administrador o un Proveedor.
+		IF(adminis IS NOT NULL) THEN
+			-- Script que devuelve al usuario junto con el administrativo
+			SELECT
+            CONCAT_WS(" ", a.pnombre, a.snombre, a.papellido, a.sapellido)  AS usuario
+			FROM usuario AS u
+			INNER JOIN administrativo a
+				ON a.idpersona = idper
+			WHERE u.idusuario = iduser
+			INTO r_usuario;
+		ELSE
+			-- Script que devuelve al usuario junto con el proveedor
+			SELECT
+				pr.razon_social  AS usuario
+			FROM usuario AS u
+			INNER JOIN proveedor pr
+				ON pr.idpersona = idper
+			WHERE u.idusuario = iduser
+			INTO r_usuario;
+		END IF;
+	ELSE 
+		SELECT usuario AS usuario
+		FROM usuario
+		WHERE idusuario = iduser
+		INTO r_usuario;
+	END IF;
+	RETURN r_usuario;
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure sp_ultimos_mensajes
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `hdfisme`$$
+CREATE PROCEDURE sp_ultimos_mensajes (IN iduser INT)
+BEGIN
+	select
+		/* obtenemos el idusuario del usuario que ha tenido una conversación con iduser */
+		case
+			when idemisor = iduser then
+				iddestinatario
+			else
+				idemisor
+			end
+		as idusuario,
+        /* Obtenemos el nombre del usuario que ha tenido una conversacion con el usuario que se le esta pasando (iduser) */
+        (select fn_nombre_usuario(idusuario)) as usuario,
+        /* Obtenemos el "id" de la última conversación (mensaje) entre el idusuario y iduser */
+        (
+			select idmensaje
+            from mensaje
+            where iddestinatario = idusuario and idemisor = iduser or iddestinatario = iduser and idemisor = idusuario
+            order by fecha_creacion desc
+            limit 1
+		) as idultimo_mensaje,
+        /* Obtenemos la última conversación entre idusuario y iduser */
+        (
+			select mensaje
+            from mensaje
+            where idmensaje = idultimo_mensaje
+		) as ultimo_mensaje,
+        /* Obtenemos la fecha de la última conversación entre idusuario y iduser*/
+        (
+			select fecha_creacion
+            from mensaje
+            where idmensaje = idultimo_mensaje
+		) as fecha_mensaje
+	from mensaje
+    where idemisor = iduser or iddestinatario = iduser
+    group by idultimo_mensaje having count(*)>=1
+    order by fecha_mensaje desc; -- Que se muestre primero las conversaciones más recientes.
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure sp_crear_bien
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `hdfisme`$$
+CREATE PROCEDURE `sp_crear_bien` (
+	IN in_denominacion	varchar(200),
+	IN in_idpecosa	int,
+	IN in_valor_adquisicion	decimal(16,2),
+	IN in_idmarca	int,
+	IN in_idmodelo	int,
+	IN in_idtipo	int,
+	IN in_idcolor	int,
+	IN in_serie_dimension	varchar(100),
+	IN in_idestado	int,
+	IN in_idunidad_medida	int,
+	IN in_comentario	varchar(500),
+	IN in_fecha_adquisicion	timestamp,
+    IN in_administrativo INT,
+    IN in_stock DECIMAL (16,3)
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SIGNAL SQLSTATE '45001'
+			SET MESSAGE_TEXT = 'Lo siento, no pude crear este bien';
+		SHOW ERRORS LIMIT 1;
+		ROLLBACK;
+	END; 
+	DECLARE EXIT HANDLER FOR SQLWARNING
+	BEGIN
+		SIGNAL SQLSTATE '45001'
+			SET MESSAGE_TEXT = 'Lo siento, no pude crear este bien';
+		SHOW WARNINGS LIMIT 1;
+		ROLLBACK;
+	END;
+
+    SET AUTOCOMMIT = FALSE;
+
+    START TRANSACTION;
+        INSERT INTO bien (
+            denominacion,
+            idpecosa,
+            valor_adquisicion,
+            idmarca,
+            idmodelo,
+            idtipo,
+            idcolor,
+            serie_dimension,
+            idestado,
+            idunidad_medida,
+            comentario,
+            fecha_adquisicion
+        ) VALUES (
+            in_denominacion,
+            in_idpecosa,
+            in_valor_adquisicion,
+            in_idmarca,
+            in_idmodelo,
+            in_idtipo,
+            in_idcolor,
+            in_serie_dimension,
+            in_idestado,
+            in_idunidad_medida,
+            in_comentario,
+            in_fecha_adquisicion
+        );
+
+        SELECT MAX(idbien) FROM `hdfisme`.`bien` INTO @idbien;
+
+        CALL create_responsable(@idbien, in_administrativo, in_stock, NULL);
+    COMMIT;
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
 -- View `hdfisme`.`vista_incidentes`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `hdfisme`.`vista_incidentes`;
@@ -2265,6 +2552,17 @@ LEFT JOIN grupo_bien gb
 LEFT JOIN tecnico t
 	ON m.idtecnico = t.idtecnico
 ORDER BY tm.tipo_mantenimiento;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- View `hdfisme`.`vista_all_usuario_nombre`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `hdfisme`.`vista_all_usuario_nombre`;
+SHOW WARNINGS;
+USE `hdfisme`;
+CREATE  OR REPLACE VIEW `vista_all_usuario_nombre` AS
+SELECT idusuario, usuario, (SELECT fn_solo_usuario(idusuario)) AS nombre
+FROM usuario;
 SHOW WARNINGS;
 
 SET SQL_MODE=@OLD_SQL_MODE;
